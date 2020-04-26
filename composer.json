@@ -1,24 +1,49 @@
 {
-    "name": "reactive-apps/command-http-server",
-    "description": "HTTP Server command",
+    "name": "mammatus/http-server",
+    "type": "composer-plugin",
+    "description": "\ud83d\udc19 Multi vhost HTTP Server",
     "license": "MIT",
     "require": {
-        "php": "^7.3",
+        "php": "^7.4",
         "cakephp/collection": "^3.6",
+        "chimera/bus-tactician": "^0.3.0",
+        "chimera/mapping": "^0.3.0",
+        "chimera/routing": "^0.3.4",
+        "chimera/routing-expressive": "^0.3.0",
+        "composer-plugin-api": "^1.1",
         "doctrine/annotations": "^1.6",
+        "laminas/laminas-diactoros": "^2.2",
+        "lcobucci/content-negotiation-middleware": "^2.2",
         "lcobucci/jwt": "^3.3",
+        "mammatus/app": "dev-master",
+        "mammatus/http-server-annotations": "dev-master",
+        "mammatus/http-server-contracts": "dev-master",
+        "mammatus/http-server-webroot": "dev-master",
+        "mammatus/life-cycle-events": "dev-master",
+        "mammatus/metrics-prometheus": "dev-master",
+        "mezzio/mezzio-helpers": "^5.3",
+        "mezzio/mezzio-router": "^3.1",
         "nikic/fast-route": "^1.2",
+        "opis/closure": "^3.5",
+        "php-di-definitions/react-event-loop-inspected": "dev-master",
+        "react-inspector/http-middleware": "^1.0",
+        "react-parallel/event-loop": "dev-master",
+        "react-parallel/limited-pool": "dev-master",
+        "react-parallel/psr-15-adapter": "dev-master",
+        "react-parallel/streams": "dev-master",
         "react/http": "^0.8.0",
-        "reactive-apps/command": "dev-master",
-        "reactive-apps/life-cycle-events": "dev-master",
-        "roave/better-reflection": "^3.2",
-        "thecodingmachine/safe": "^0.1.16",
+        "roave/better-reflection": "^4.0",
+        "thecodingmachine/safe": "^1.0",
         "thruway/middleware": "^0.0.2",
         "voryx/thruway": "^0.5.3",
         "wyrihaximus/broadcast": "dev-master",
+        "wyrihaximus/broadcast-contracts": "^1.0",
+        "wyrihaximus/composer-update-bin-autoload-path": "dev-master",
         "wyrihaximus/doctrine-annotation-autoloader": "^1.0",
         "wyrihaximus/get-in-packages-composer.jason": "^1.0",
+        "wyrihaximus/iterator-or-array-to-array": "^1.1",
         "wyrihaximus/json-psr7": "^1.0",
+        "wyrihaximus/list-classes-in-directory": "^1.3",
         "wyrihaximus/psr-3-callable-throwable-logger": "^2.0",
         "wyrihaximus/psr-3-context-logger": "^1.0",
         "wyrihaximus/react-child-process-closure": "^1.0",
@@ -33,6 +58,7 @@
         "wyrihaximus/react-stream-json": "^1.2",
         "wyrihaximus/recoil-promise-coroutine-wrapper": "^1.0",
         "wyrihaximus/recoil-queue-caller-pool": "^1.2",
+        "wyrihaximus/simple-twig": "^1.1",
         "wyrihaximus/string-get-in": "^1.0",
         "wyrihaximus/to-child-process-or-not-to-child-process": "^1.0",
         "wyrihaximus/to-coroutine-or-not-to-coroutine": "^1.0",
@@ -41,75 +67,50 @@
     },
     "require-dev": {
         "monolog/monolog": "^2.0",
-        "twig/twig": "^2.8",
-        "wyrihaximus/async-test-utilities": "^1.1",
-        "wyrihaximus/cs-fixer-config": "^1.0",
-        "wyrihaximus/pool-info": "^1.0",
-        "wyrihaximus/react-parallel": "dev-master"
-    },
-    "suggest": {
-        "wyrihaximus/react-parallel": "Run request handlers in threads (more performant than child processes)"
+        "wyrihaximus/async-test-utilities": "^2.1"
     },
     "config": {
         "platform": {
-            "php": "7.3"
+            "php": "7.4"
         },
         "sort-packages": true
     },
     "extra": {
+        "class": "Mammatus\\Http\\Server\\Composer\\Installer",
+        "mammatus": {
+            "http": {
+                "server": {
+                    "has-vhosts": true
+                }
+            }
+        },
         "php-di-definitions": {
             "di": [
                 "etc/di/*.php"
             ]
         },
-        "reactive-apps": {
-            "command": {
-                "ReactiveApps\\Command\\HttpServer\\Command": "src/Command"
-            },
-            "http-controller": [
-                "src/Controller/*.php",
-                "src/Controller/**/*.php"
-            ],
-            "required-config": {
-                "http-server.address": "The IP + Port to listen on, for example: 0.0.0.0:8080"
-            },
-            "suggested-config": {
-                "http-server.hsts": "Whether or not to set HSTS headers",
-                "http-server.public": "Public webroot to serve, note only put files in here everyone is allowed to see",
-                "http-server.public.preload.cache": "Custom cache to store the preloaded webroot files, stored in memory by default",
-                "http-server.middleware.prefix": "An array with react/http middleware added before the accesslog and webroot serving middleware",
-                "http-server.middleware.suffix": "An array with react/http middleware added after the accesslog and webroot serving middleware and before the route middleware and request handler",
-                "http-server.pool.ttl": "TTL for a child process to wait for it's next task",
-                "http-server.pool.min": "Minimum number of child processes",
-                "http-server.pool.max": "maximum number of child processes",
-                "http-server.rewrites": "Rewrites request path internally from one path to the other, invisible for visitors",
-                "http-server.thruway.realms": "An array with Thruway realms"
-            },
-            "listeners": {
-                "ReactiveApps\\LifeCycleEvents\\Shutdown": [
-                    "src/Listener/Shutdown.php"
-                ],
-                "ReactiveApps\\Command\\HttpServer\\Event\\RealmClose": [
-                    "src/Listener/RealmClose.php"
-                ],
-                "ReactiveApps\\Command\\HttpServer\\Event\\RealmOpen": [
-                    "src/Listener/RealmOpen.php"
-                ]
+        "wyrihaximus": {
+            "broadcast": {
+                "has-listeners": true
             }
         }
     },
     "autoload": {
         "psr-4": {
-            "ReactiveApps\\Command\\HttpServer\\": "src/"
+            "Mammatus\\Http\\Server\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "ReactiveApps\\Tests\\Command\\HttpServer\\": "tests/"
+            "Mammatus\\Tests\\Http\\Server\\": "tests/"
         }
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "path",
+            "url": "psr-15-adapter-master"
+        }
+    ],
     "scripts": {
         "post-install-cmd": [
             "composer normalize"
@@ -117,50 +118,11 @@
         "post-update-cmd": [
             "composer normalize"
         ],
-        "ci-coverage": [
-            "if [ -f ./build/logs/clover.xml ]; then wget https://scrutinizer-ci.com/ocular.phar && php ocular.phar code-coverage:upload --format=php-clover ./build/logs/clover.xml; fi"
+        "pre-autoload-dump": [
+            "Mammatus\\Http\\Server\\Composer\\Installer::findVhosts"
         ],
-        "cs": [
-            "php-cs-fixer fix --config=.php_cs --ansi --dry-run --diff --verbose --allow-risky=yes --show-progress=estimating"
-        ],
-        "cs-fix": [
-            "php-cs-fixer fix --config=.php_cs --ansi --verbose --allow-risky=yes --show-progress=estimating"
-        ],
-        "infection": [
-            "infection --ansi --threads=4"
-        ],
-        "lint-php": [
-            "parallel-lint --exclude vendor ."
-        ],
-        "qa-all": [
-            "composer validate --ansi",
-            "composer normalize --ansi",
-            "@lint-php",
-            "@cs",
-            "@stan",
-            "@unit",
-            "@infection"
-        ],
-        "qa-ci": [
-            "@unit"
-        ],
-        "qa-ci-windows": [
-            "@qa-windows"
-        ],
-        "qa-contrib": [
-            "@qa-all"
-        ],
-        "qa-windows": [
-            "@lint-php",
-            "@cs",
-            "@stan",
-            "@unit"
-        ],
-        "stan": [
-            "phpstan analyse src tests --level max --ansi -c phpstan.neon"
-        ],
-        "unit": [
-            "phpunit --colors=always -c phpunit.xml.dist --coverage-text --coverage-html covHtml --coverage-clover ./build/logs/clover.xml"
+        "generate-config": [
+            "Mammatus\\Http\\Server\\Composer\\Installer::findVhosts"
         ]
     }
 }

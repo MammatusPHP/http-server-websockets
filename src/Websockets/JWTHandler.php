@@ -1,21 +1,22 @@
 <?php declare(strict_types=1);
 
-namespace ReactiveApps\Command\HttpServer\Controller;
+namespace Mammatus\Http\Server\Websockets;
 
+use Chimera\Mapping\Routing\FetchEndpoint;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
+use Mammatus\Http\Server\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use ReactiveApps\Command\HttpServer\Annotations\Method;
-use ReactiveApps\Command\HttpServer\Annotations\Routes;
-use ReactiveApps\Command\HttpServer\Annotations\Template;
-use ReactiveApps\Command\HttpServer\Exception\UnknownRealmException;
-use WyriHaximus\React\Http\Middleware\TemplateResponse;
-use function WyriHaximus\getIn;
 use WyriHaximus\React\Http\Middleware\Session;
 use WyriHaximus\React\Http\Middleware\SessionMiddleware;
+use WyriHaximus\React\Stream\Json\JsonStreamFactory;
+use function WyriHaximus\getIn;
 
-final class JWT
+/**
+ * @FetchEndpoint(path="/thruway/jwt/{realm:[a-zA-Z0-9\-\_]{1,}}.json", query=FetchJWT::class)
+ */
+final class JWTHandler
 {
     /** @var Realm[] */
     private $realms = [];
@@ -26,13 +27,6 @@ final class JWT
     }
 
     /**
-     * @Method("GET")
-     * @Routes({
-     *     "/thruway/jwt/token.json",
-     *     "/thruway/jwt/{realm:[a-zA-Z0-9\-\_]{1,}}.json"
-     * })
-     * @Template("thruway/jwt/token")
-     *
      * @param  ServerRequestInterface $request
      * @throws UnknownRealmException
      * @return ResponseInterface
@@ -69,8 +63,12 @@ final class JWT
             ->sign(new Sha256(), $authKeySalt . $this->realms[$realm]->getAuth()->getKey() . $authKeySalt)
             ->getToken();
 
-        return (new TemplateResponse())->withTemplateData([
-            'token' => $token,
-        ]);
+        return JsonResponse::create(
+            200,
+            [],
+            JsonStreamFactory::createFromArray([
+                'token' => $token,
+            ])
+        );
     }
 }

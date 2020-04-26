@@ -1,3 +1,6 @@
+time docker run --rm -w `pwd` -v `pwd`:`pwd` -p 9666"9666  -it wyrihaximusnet/php:7.4-zts-alpine3.11-dev php ./vendor/bin/mammatus
+
+
 # HTTP Server command
 
 [![Build Status](https://travis-ci.com/reactive-apps/command-http-server.svg?branch=master)](https://travis-ci.com/reactive-apps/command-http-server)
@@ -10,19 +13,19 @@
 # Install
 
 To install via [Composer](http://getcomposer.org/), use the command below, it will automatically detect the latest version and bind it with `^`.
- 
+
 ```
-composer require reactive-apps/command-http-server 
+composer require reactive-apps/command-http-server
 ```
 
 # Controllers
 
-Controllers come in two different flavours static and instantiated controllers. 
+Controllers come in two different flavours static and instantiated controllers.
 
 ## Static Controllers
 
-Static controllers are recommended when your controller doesn't have any dependencies like this ping controller used for 
-[`updown.io`](https://updown.io/r/rPWzd) health checks. ***Note: `/ping` isn't a updown standard but it's my personal 
+Static controllers are recommended when your controller doesn't have any dependencies like this ping controller used for
+[`updown.io`](https://updown.io/r/rPWzd) health checks. ***Note: `/ping` isn't a updown standard but it's my personal
 standard of doing health checks for my apps*** This controller only has a single method with a single route and no
 dependencies:
 
@@ -59,9 +62,9 @@ final class Ping
 
 ## Instantiated Controllers
 
-Instantiated Controllers on the other hand will be instantiated and kept around to handle more requests in the future 
-as such they can have dependencies injected. The example below is a controller that has the event loop injected to wait 
-for a random number of seconds before returning the response. It also uses coroutines to make the code more readable: 
+Instantiated Controllers on the other hand will be instantiated and kept around to handle more requests in the future
+as such they can have dependencies injected. The example below is a controller that has the event loop injected to wait
+for a random number of seconds before returning the response. It also uses coroutines to make the code more readable:
 
 ```php
 <?php declare(strict_types=1);
@@ -123,23 +126,23 @@ final class Root
 
 # Routing
 
-Routing is done through annotations on the method handling the routes. Each method can handle multiple routes but it's 
+Routing is done through annotations on the method handling the routes. Each method can handle multiple routes but it's
 recommended to only map routes that fit the the method.
 
-For example the following annotation will map the current method to `/` (***note: all routes are required to be 
+For example the following annotation will map the current method to `/` (***note: all routes are required to be
 prefixed with `/`***): `@Routes("/")`
 
-A multi route annotation has a slightly different syntax, in the following both `/old` and `/new` will be handled by 
-the same method: 
+A multi route annotation has a slightly different syntax, in the following both `/old` and `/new` will be handled by
+the same method:
 
 ```php
 @Routes({
     "/old",
     "/new"
 })
-``` 
+```
 
-The underlying engine for routes is [`nikic/fast-route`](https://github.com/nikic/FastRoute) which also makes complex 
+The underlying engine for routes is [`nikic/fast-route`](https://github.com/nikic/FastRoute) which also makes complex
 routes like this one possible:
 
 ```php
@@ -154,7 +157,7 @@ $request->getAttribute('center');
 
 # Templates
 
-A route can render a template upon completion it needs an annotation and return/resolve with a `TemplateResponse` 
+A route can render a template upon completion it needs an annotation and return/resolve with a `TemplateResponse`
 holding the data required for that template. For example:
 
 ```php
@@ -174,8 +177,8 @@ public function root(ServerRequestInterface $request)
 
 # Blocking operations in requests
 
-While we aim for building a completely non-blocking application we can't escape the truth that there might always be 
-parts of our application that would block the loop. For those situations there are two ways provided to deal with those 
+While we aim for building a completely non-blocking application we can't escape the truth that there might always be
+parts of our application that would block the loop. For those situations there are two ways provided to deal with those
 situations:
 
 * Child Process (slow, spawns full PHP processes to handle the request)
@@ -183,13 +186,13 @@ situations:
 
 ## Child Processes
 
-Works on most if not all systems but requires a full PHP processes per worker. Start up can be slow and communication 
-with the child process goes over a socket. Add the `@ChildProcess` annotation to handle that specific action in a 
+Works on most if not all systems but requires a full PHP processes per worker. Start up can be slow and communication
+with the child process goes over a socket. Add the `@ChildProcess` annotation to handle that specific action in a
 child process.
 
 ## Threads
 
-Works only on ZTS PHP builds, but in return starts up almost instantly, communication is directly in memory thus never 
+Works only on ZTS PHP builds, but in return starts up almost instantly, communication is directly in memory thus never
 leaving the application server. Add the `@Thread` annotation to handle that specific action in a thread.
 
 # Annotations

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ReactiveApps\Command\HttpServer\Thruway;
+namespace Mammatus\Http\Server\Websockets;
 
 final class RealmAuth
 {

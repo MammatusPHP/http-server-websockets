@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ReactiveApps\Command\HttpServer;
+namespace Mammatus\Http\Server;
 
 use Psr\Http\Message\ResponseInterface;
 use React\Http\Response;
