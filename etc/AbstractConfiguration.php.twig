@@ -44,6 +44,7 @@ use Psr\Log\LoggerInterface;
 use React\EventLoop\LoopInterface;
 use React\Http\Server as HttpServer;
 use ReactInspector\HttpMiddleware\MiddlewareCollector;
+use ReactParallel\EventLoop\EventLoopBridge;
 use ReactParallel\Pool\Infinite\Infinite;
 use ReactParallel\Psr15Adapter\ReactMiddleware;
 use ReactParallel\Streams\Factory;
@@ -67,7 +68,7 @@ abstract class AbstractConfiguration
 
     final protected function initialize(LoopInterface $loop, LoggerInterface $logger, ContainerInterface $container)
     {
-        $threadPool = new Infinite($loop, 3);
+        $threadPool = new Infinite($loop, $container->get(EventLoopBridge::class), 3);
         $channelStreamFactory = $container->get(Factory::class);
         $namedConstructor = $container->get(NamedConstructor::class);
         $responseFactory = new ResponseFactory();//$container->get(ResponseFactoryInterface::class)
