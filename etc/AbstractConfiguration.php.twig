@@ -68,7 +68,7 @@ abstract class AbstractConfiguration
 
     final protected function initialize(LoopInterface $loop, LoggerInterface $logger, ContainerInterface $container)
     {
-        $threadPool = new Infinite($loop, $container->get(EventLoopBridge::class), 3);
+        $threadPool = new Infinite($loop, $container->get(EventLoopBridge::class), 13);
         $channelStreamFactory = $container->get(Factory::class);
         $namedConstructor = $container->get(NamedConstructor::class);
         $responseFactory = new ResponseFactory();//$container->get(ResponseFactoryInterface::class)
@@ -125,39 +125,41 @@ abstract class AbstractConfiguration
                     )
                     {% endif %}
                     new UnformattedContent(),
-                    new ReactMiddleware($channelStreamFactory, $threadPool, new ServerUrlMiddleware($container->get(ServerUrlHelper::class))),
-                    new ReactMiddleware($channelStreamFactory, $threadPool, new ContentTypeMiddleware(
-                        new ContentType([
-                            'json' => [
-                                'extension' => ['json'],
-                                'mime-type' => ['application/json'],
-                                'charset' => true,
+                    new ReactMiddleware($loop, $container->get(EventLoopBridge::class), $channelStreamFactory, $threadPool,
+                        new ServerUrlMiddleware($container->get(ServerUrlHelper::class)),
+                        new ContentTypeMiddleware(
+                            new ContentType([
+                                'json' => [
+                                    'extension' => ['json'],
+                                    'mime-type' => ['application/json'],
+                                    'charset' => true,
+                                ],
+                                'html' => [
+                                    'extension' => ['html', 'htm'],
+                                    'mime-type' => ['text/html', 'application/xhtml+xml'],
+                                    'charset' => true,
+                                ],
+                                'plain' => [
+                                    'extension' => [],
+                                    'mime-type' => ['text/plain'],
+                                    'charset' => true,
+                                ],
+                            ]),
+                            [
+                                'application/json' => new Json(),
+                                'text/html'        => new StringCast(),
+                                'text/plain'        => new StringCast(),
                             ],
-                            'html' => [
-                                'extension' => ['html', 'htm'],
-                                'mime-type' => ['text/html', 'application/xhtml+xml'],
-                                'charset' => true,
-                            ],
-                            'plain' => [
-                                'extension' => [],
-                                'mime-type' => ['text/plain'],
-                                'charset' => true,
-                            ],
-                        ]),
-                        [
-                            'application/json' => new Json(),
-                            'text/html'        => new StringCast(),
-                            'text/plain'        => new StringCast(),
-                        ],
-                        $streamFactory,
-                    )),
-                    new ReactMiddleware($channelStreamFactory, $threadPool, new RouteMiddleware($router_{{ server.vhost().name() }})),
-                    new ReactMiddleware($channelStreamFactory, $threadPool, new RouteParamsExtraction($container->get(RouteParamsExtractor::class))),
-                    new ReactMiddleware($channelStreamFactory, $threadPool, new ImplicitHeadMiddleware($router_{{ server.vhost().name() }}, $streamFactoryCallable)),
-                    new ReactMiddleware($channelStreamFactory, $threadPool, new ImplicitOptionsMiddleware($responseFactoryCallable)),
-                    new ReactMiddleware($channelStreamFactory, $threadPool, new MethodNotAllowedMiddleware($responseFactoryCallable)),
-                    new ReactMiddleware($channelStreamFactory, $threadPool, new UrlHelperMiddleware(new UrlHelper($router_{{ server.vhost().name() }}))),
-                    new ReactMiddleware($channelStreamFactory, $threadPool, new DispatchMiddleware()),
+                            $streamFactory,
+                        ),
+                        new RouteMiddleware($router_{{ server.vhost().name() }}),
+                        new RouteParamsExtraction($container->get(RouteParamsExtractor::class)),
+                        new ImplicitHeadMiddleware($router_{{ server.vhost().name() }}, $streamFactoryCallable),
+                        new ImplicitOptionsMiddleware($responseFactoryCallable),
+                        new MethodNotAllowedMiddleware($responseFactoryCallable),
+                        new UrlHelperMiddleware(new UrlHelper($router_{{ server.vhost().name() }})),
+                        new DispatchMiddleware()
+                    ),
                     static function (): ResponseInterface {
                         return new Response(
                             404,
