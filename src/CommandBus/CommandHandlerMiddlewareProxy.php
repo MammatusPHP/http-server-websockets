@@ -18,7 +18,7 @@ final class CommandHandlerMiddlewareProxy implements Middleware
 
     public function execute($command, callable $next)
     {
-        Channel::open($this->output)->send($command);
+        Channel::open($this->output)->send(serialize($command));
         return Channel::open($this->input)->recv();
     }
 }

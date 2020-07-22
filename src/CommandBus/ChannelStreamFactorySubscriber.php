@@ -21,7 +21,7 @@ final class ChannelStreamFactorySubscriber
 
     public function __invoke($command): void
     {
-        $result = $this->commandHandlerMiddleware->execute($command, function () {});
+        $result = $this->commandHandlerMiddleware->execute(unserialize($command), function () {});
         if ($result instanceof PromiseInterface) {
             $result->then(fn (ResponseInterface $response) => $this->input->send($this->swapOutResponseBody($response)));
             return;
