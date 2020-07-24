@@ -33,18 +33,26 @@ use Mezzio\Router\Middleware\ImplicitOptionsMiddleware;
 use Mezzio\Router\Middleware\MethodNotAllowedMiddleware;
 use Mezzio\Router\Middleware\RouteMiddleware;
 use Mezzio\Router\RouteCollector;
+use Middlewares\AccessLog;
+use Middlewares\ClientIp;
 use Middlewares\ContentType;
+use Middlewares\Expires;
+use Middlewares\ResponseTime;
+use Middlewares\Uuid;
 use parallel\Channel;
 use parallel\Events;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Log\LoggerInterface;
 use React\EventLoop\LoopInterface;
 use React\Http\Server as HttpServer;
+use React\Promise\PromiseInterface;
 use ReactInspector\HttpMiddleware\MiddlewareCollector;
 use ReactParallel\EventLoop\EventLoopBridge;
+use ReactParallel\Logger\Logger;
 use ReactParallel\Pool\Infinite\Infinite;
 use ReactParallel\Psr15Adapter\ReactMiddleware;
 use ReactParallel\Streams\Factory;
@@ -54,6 +62,7 @@ use RingCentral\Psr7\Response;
 use WyriHaximus\PSR3\CallableThrowableLogger\CallableThrowableLogger;
 use Zend\Expressive\Router\FastRouteRouter;
 use Zend\Stratigility\Middleware\RequestHandlerMiddleware;
+use function React\Promise\resolve;
 use function WyriHaximus\iteratorOrArrayToArray;
 
 /**
@@ -68,6 +77,29 @@ abstract class AbstractConfiguration
 
     final protected function initialize(LoopInterface $loop, LoggerInterface $logger, ContainerInterface $container)
     {
+        $channelLogger = $container->get(Logger::class);
+        $expires = require \Composed\package('middlewares/cache')->getPath('src/expires_defaults.php');
+        $clientIpMiddleware = new ClientIp();
+        $uuidMiddleware = new Uuid();
+        $accessLogMiddleware = (new AccessLog($channelLogger))->format('[%{vhost}] %a %l %u %Dms "%r" %>s %b "%{Referer}i" "%{User-Agent}i"')->
+            ipAttribute('client-ip')->
+            context(function (ServerRequestInterface $request, ResponseInterface $response) {
+                return [
+                    'vhost' => $request->getAttribute('vhost'),
+                    'client-ip' => $request->getAttribute('client-ip'),
+                    'request-id' => $request->getHeaderLine('X-Uuid'),
+                    'request-method' => $request->getMethod(),
+                    'request-protocol-version' => $request->getProtocolVersion(),
+                    'response-protocol-version' => $response->getProtocolVersion(),
+                    'response-status-code' => $response->getStatusCode(),
+                    'response-time' => $response->getHeaderLine('X-Response-Time'),
+                    'response-time-float' => \substr($response->getHeaderLine('X-Response-Time'), 0, -2),
+                    'response-time-float-single-digit' => \round((float)\substr($response->getHeaderLine('X-Response-Time'), 0, -2), 1),
+                    'response-time-int' => (int)\round((float)\substr($response->getHeaderLine('X-Response-Time'), 0, -2), 0),
+                ];
+            });
+        $responseTimeMiddleware = new ResponseTime();
+        $expiresMiddleware = new Expires($expires);
         $threadPool = new Infinite($loop, $container->get(EventLoopBridge::class), 13);
         $channelStreamFactory = $container->get(Factory::class);
         $namedConstructor = $container->get(NamedConstructor::class);
@@ -117,6 +149,9 @@ abstract class AbstractConfiguration
                 iteratorOrArrayToArray($this->middleware()),
                 [
                     new MiddlewareCollector('{{ server.vhost().name() }}'),
+                    static function (ServerRequestInterface $request, callable $next): PromiseInterface {
+                        return resolve($next($request->withAttribute('vhost', '{{ server.vhost().name() }}')));
+                    },
                     {% if server.hasWebroot() %}
                     new WebrootPreloadMiddleware(
                         '{{ server.webroot() }}',
@@ -125,7 +160,16 @@ abstract class AbstractConfiguration
                     )
                     {% endif %}
                     new UnformattedContent(),
-                    new ReactMiddleware($loop, $container->get(EventLoopBridge::class), $channelStreamFactory, $threadPool,
+                    new ReactMiddleware(
+                        $loop,
+                        $container->get(EventLoopBridge::class),
+                        $channelStreamFactory,
+                        $threadPool,
+                        $clientIpMiddleware,
+                        $uuidMiddleware,
+                        $accessLogMiddleware,
+                        $responseTimeMiddleware,
+                        $expiresMiddleware,
                         new ServerUrlMiddleware($container->get(ServerUrlHelper::class)),
                         new ContentTypeMiddleware(
                             new ContentType([

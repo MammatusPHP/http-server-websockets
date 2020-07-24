@@ -34,12 +34,5 @@ final class Configuration extends AbstractConfiguration
         if (\ini_get('enable_post_data_reading') !== '') {
             yield new RequestBodyParserMiddleware();
         }
-//        yield Factory::create(
-//            $this->loop,
-//            $this->logger,
-//            [
-//                'hsts' => TRUE_,
-//            ]
-//        );
     }
 }
