@@ -29,7 +29,7 @@ final class Configuration extends AbstractConfiguration
 
     protected function middleware(): iterable
     {
-//        yield new ResumeResponseBodyMiddleware($this->loop);
+        yield new ResumeResponseBodyMiddleware($this->loop);
         yield new RequestBodyBufferMiddleware();
 
         if (ini_get('enable_post_data_reading') === '') {
