@@ -1,6 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace ReactiveApps\Command\HttpServer\Annotations;
+
+use function current;
 
 /**
  * @Annotation
@@ -8,22 +12,16 @@ namespace ReactiveApps\Command\HttpServer\Annotations;
  */
 final class Method
 {
-    /**
-     * @var string
-     */
-    private $method;
+    private string $method;
 
     /**
      * @param string[] $methods
      */
     public function __construct(array $methods)
     {
-        $this->method = \current($methods);
+        $this->method = current($methods);
     }
 
-    /**
-     * @return string
-     */
     public function getMethod(): string
     {
         return $this->method;

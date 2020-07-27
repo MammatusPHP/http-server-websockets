@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Mammatus\Http\Server\HealthCheck;
 
@@ -8,7 +10,6 @@ use Laminas\Diactoros\Response;
 use Mammatus\Http\Server\Annotations\Bus;
 use Mammatus\Http\Server\Annotations\Vhost;
 use Psr\Http\Message\ResponseInterface;
-use React\Promise\PromiseInterface;
 
 /**
  * @Vhost("healtz")
@@ -19,6 +20,6 @@ final class HealtzHandler
 {
     public function handle(FetchHealtz $request): ResponseInterface
     {
-        return new Response(new ReadOnlyStringStream('healthy'),200, ['Content-Type' => 'text/plain']);
+        return new Response(new ReadOnlyStringStream('healthy'), 200, ['Content-Type' => 'text/plain']);
     }
 }

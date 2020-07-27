@@ -1,25 +1,26 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace ReactiveApps\Command\HttpServer\Middleware;
 
 use Psr\Http\Message\ServerRequestInterface;
 use React\Promise\PromiseInterface;
+use WyriHaximus\React\Parallel\PoolInterface;
+
+use function array_key_exists;
 use function React\Promise\resolve;
 use function WyriHaximus\psr7_response_decode;
 use function WyriHaximus\psr7_response_encode;
 use function WyriHaximus\psr7_server_request_decode;
 use function WyriHaximus\psr7_server_request_encode;
-use WyriHaximus\React\Parallel\PoolInterface;
 
 /**
  * @internal
  */
 final class ThreadMiddleware
 {
-    /**
-     * @var PoolInterface
-     */
-    private $pool;
+    private PoolInterface $pool;
 
     public function __construct(PoolInterface $pool)
     {
@@ -31,13 +32,13 @@ final class ThreadMiddleware
         $requestHandlerAnnotations = $request->getAttribute('request-handler-annotations');
 
         if (array_key_exists('thread', $requestHandlerAnnotations) && $requestHandlerAnnotations['thread'] === true) {
-            return $this->pool->run(function ($jsonRequest) {
-                $request = psr7_server_request_decode($jsonRequest);
+            return $this->pool->run(static function ($jsonRequest) {
+                $request        = psr7_server_request_decode($jsonRequest);
                 $requestHandler = $request->getAttribute('request-handler');
-                $response = $requestHandler($request);
+                $response       = $requestHandler($request);
 
                 return psr7_response_encode($response);
-            }, [psr7_server_request_encode($request)])->then(function ($response) {
+            }, [psr7_server_request_encode($request)])->then(static function ($response) {
                 return psr7_response_decode($response);
             });
         }

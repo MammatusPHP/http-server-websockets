@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace ReactiveApps\Command\HttpServer\Event;
 
@@ -7,15 +9,13 @@ use Thruway\ClientSession;
 
 final class RealmOpen
 {
-    /** @var Realm */
-    private $realm;
+    private Realm $realm;
 
-    /** @var ClientSession */
-    private $session;
+    private ClientSession $session;
 
     public function __construct(Realm $realm, ClientSession $session)
     {
-        $this->realm = $realm;
+        $this->realm   = $realm;
         $this->session = $session;
     }
 

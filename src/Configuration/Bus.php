@@ -1,9 +1,8 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Mammatus\Http\Server\Configuration;
-
-use Mammatus\Http\Server\Configuration\NoWebroot;
-use Mammatus\Http\Server\Configuration\Webroot;
 
 final class Bus
 {
@@ -17,7 +16,7 @@ final class Bus
      */
     public function __construct(string $name, Handler ...$handlers)
     {
-        $this->name = $name;
+        $this->name     = $name;
         $this->handlers = $handlers;
     }
 

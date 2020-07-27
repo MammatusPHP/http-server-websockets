@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Mammatus\Http\Server;
 
@@ -17,8 +19,8 @@ final class Server implements Listener
     public function __construct(Configuration $configuration, LoopInterface $loop, LoggerInterface $logger)
     {
         $this->configuration = $configuration;
-        $this->loop = $loop;
-        $this->logger = $logger;
+        $this->loop          = $loop;
+        $this->logger        = $logger;
     }
 
     public function start(Initialize $event): void

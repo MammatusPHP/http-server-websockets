@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace ReactiveApps\Command\HttpServer\Listener;
 
@@ -7,16 +9,10 @@ use React\Socket\ServerInterface;
 
 final class Shutdown
 {
-    /** @var ServerInterface */
-    private $socket;
+    private ServerInterface $socket;
 
-    /** @var LoggerInterface */
-    private $logger;
+    private LoggerInterface $logger;
 
-    /**
-     * @param ServerInterface $socket
-     * @param LoggerInterface $logger
-     */
     public function __construct(ServerInterface $socket, LoggerInterface $logger)
     {
         $this->socket = $socket;

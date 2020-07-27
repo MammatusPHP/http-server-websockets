@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Mammatus\Http\Server\Web;
 
@@ -14,25 +16,20 @@ final class Server
     private ?SocketServer $socket = null;
     private HttpServer $http;
 
-    /**
-     * @param string $name
-     * @param string $address
-     * @param HttpServer $http
-     */
     public function __construct(string $name, string $address, HttpServer $http)
     {
-        $this->name = $name;
+        $this->name    = $name;
         $this->address = $address;
-        $this->http = $http;
+        $this->http    = $http;
     }
 
-    public function start(LoopInterface $loop)
+    public function start(LoopInterface $loop): void
     {
         $this->socket = new SocketServer($this->address, $loop);
         $this->http->listen($this->socket);
     }
 
-    public function stop()
+    public function stop(): void
     {
         if (! ($this->socket instanceof SocketServer)) {
             return;

@@ -1,9 +1,8 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Mammatus\Http\Server\Configuration;
-
-use Mammatus\Http\Server\Configuration\NoWebroot;
-use Mammatus\Http\Server\Configuration\Webroot;
 
 final class Handler
 {
@@ -19,11 +18,11 @@ final class Handler
      */
     public function __construct(array $methods, string $command, string $commandHandler, string $handler, string $path)
     {
-        $this->methods = $methods;
-        $this->command = $command;
+        $this->methods        = $methods;
+        $this->command        = $command;
         $this->commandHandler = $commandHandler;
-        $this->handler = $handler;
-        $this->path = $path;
+        $this->handler        = $handler;
+        $this->path           = $path;
     }
 
     public function methods(): array

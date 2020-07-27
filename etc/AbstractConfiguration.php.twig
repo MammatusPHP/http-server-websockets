@@ -48,6 +48,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Log\LoggerInterface;
 use React\EventLoop\LoopInterface;
+use React\Http\Middleware\LimitConcurrentRequestsMiddleware;
 use React\Http\Server as HttpServer;
 use React\Promise\PromiseInterface;
 use ReactInspector\HttpMiddleware\MiddlewareCollector;
@@ -145,9 +146,10 @@ abstract class AbstractConfiguration
         $routeCollector_{{ server.vhost().name() }}->route('{{ handler.path() }}', new RequestHandlerMiddleware(new \{{ handler.handler() }}(new ExecuteQuery($serviceBus_{{ server.vhost().name() }}_{{ bus.name() }}, $namedConstructor, \{{ handler.command() }}::class), $responseFactory)), ['{{ handler.methods()|join("', '") }}']);
         {% endfor %}
         {% endfor %}
-        $http_server_{{ server.vhost().name() }} = new HttpServer(array_merge(
+        $http_server_{{ server.vhost().name() }} = new HttpServer($loop, ...array_merge(
                 iteratorOrArrayToArray($this->middleware()),
                 [
+                    new LimitConcurrentRequestsMiddleware(PHP_INT_MAX),
                     new MiddlewareCollector('{{ server.vhost().name() }}'),
                     static function (ServerRequestInterface $request, callable $next): PromiseInterface {
                         return resolve($next($request->withAttribute('vhost', '{{ server.vhost().name() }}')));

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Mammatus\Http\Server\CommandBus;
 
@@ -8,6 +10,8 @@ use parallel\Channel;
 use Psr\Http\Message\ResponseInterface;
 use React\Promise\PromiseInterface;
 
+use function unserialize;
+
 final class ChannelStreamFactorySubscriber
 {
     private Channel $input;
@@ -15,15 +19,17 @@ final class ChannelStreamFactorySubscriber
 
     public function __construct(Channel $input, CommandHandlerMiddleware $commandHandlerMiddleware)
     {
-        $this->input = $input;
+        $this->input                    = $input;
         $this->commandHandlerMiddleware = $commandHandlerMiddleware;
     }
 
     public function __invoke($command): void
     {
-        $result = $this->commandHandlerMiddleware->execute(unserialize($command), function () {});
+        $result = $this->commandHandlerMiddleware->execute(unserialize($command), static function (): void {
+        });
         if ($result instanceof PromiseInterface) {
             $result->then(fn (ResponseInterface $response) => $this->input->send($this->swapOutResponseBody($response)));
+
             return;
         }
 
@@ -34,7 +40,7 @@ final class ChannelStreamFactorySubscriber
     {
         return $response->withBody(
             new ReadOnlyStringStream(
-                (string)$response->getBody()
+                (string) $response->getBody()
             )
         );
     }

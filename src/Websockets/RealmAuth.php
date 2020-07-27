@@ -1,19 +1,19 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Mammatus\Http\Server\Websockets;
 
 final class RealmAuth
 {
-    /** @var bool */
-    private $enable;
+    private bool $enable;
 
-    /** @var string */
-    private $key;
+    private string $key;
 
     public function __construct(bool $enable, string $key)
     {
         $this->enable = $enable;
-        $this->key = $key;
+        $this->key    = $key;
     }
 
     public function isEnabled(): bool

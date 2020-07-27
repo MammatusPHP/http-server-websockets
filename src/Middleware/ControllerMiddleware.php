@@ -1,16 +1,22 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace ReactiveApps\Command\HttpServer\Middleware;
 
 use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
-use function FastRoute\simpleDispatcher;
 use Middlewares\Utils\Factory;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use React\Promise\PromiseInterface;
-use function React\Promise\resolve;
 use ReactiveApps\Command\HttpServer\Routing\Collector;
+
+use function array_unique;
+use function FastRoute\simpleDispatcher;
+use function implode;
+use function is_string;
+use function React\Promise\resolve;
 use function RingCentral\Psr7\stream_for;
 
 /**
@@ -18,14 +24,12 @@ use function RingCentral\Psr7\stream_for;
  */
 final class ControllerMiddleware
 {
-    /** @var ContainerInterface */
-    private $container;
+    private ContainerInterface $container;
 
-    /** @var Dispatcher */
-    private $router;
+    private Dispatcher $router;
 
     /** @var array */
-    private $routes = [];
+    private array $routes = [];
 
     public function __construct(ContainerInterface $container)
     {
@@ -36,6 +40,7 @@ final class ControllerMiddleware
                 foreach ($routes['routes'] as $route) {
                     $routeCollector->addRoute($routes['method'], $route, $routes['handler']);
                 }
+
                 $this->routes[$routes['handler']] = [
                     'annotations' => $routes['annotations'],
                     'static' => $routes['static'],
@@ -59,7 +64,7 @@ final class ControllerMiddleware
 
         if ($route[0] === Dispatcher::METHOD_NOT_ALLOWED) {
             return resolve(
-                Factory::createResponse(405)->withHeader('Allow', \implode(', ', \array_unique($route[1])))->
+                Factory::createResponse(405)->withHeader('Allow', implode(', ', array_unique($route[1])))->
                     withHeader('Content-Type', 'text/plain')->
                     withBody(stream_for('Method not allowed'))
             );
@@ -72,10 +77,9 @@ final class ControllerMiddleware
         $request = $request
             ->withAttribute('request-handler', $route[1])
             ->withAttribute('request-handler-annotations', $this->routes[$route[1]]['annotations'])
-            ->withAttribute('request-handler-static', $this->routes[$route[1]]['static'])
-        ;
+            ->withAttribute('request-handler-static', $this->routes[$route[1]]['static']);
 
-        if (\is_string($this->routes[$route[1]]['template'])) {
+        if (is_string($this->routes[$route[1]]['template'])) {
             $request = $request->withAttribute('request-handler-template', $this->routes[$route[1]]['template']);
         }
 

@@ -1,6 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace ReactiveApps\Command\HttpServer\Annotations;
+
+use function current;
 
 /**
  * @Annotation
@@ -8,22 +12,16 @@ namespace ReactiveApps\Command\HttpServer\Annotations;
  */
 final class Template
 {
-    /**
-     * @var string
-     */
-    private $template;
+    private string $template;
 
     /**
      * @param string[] $templates
      */
     public function __construct(array $templates)
     {
-        $this->template = \current($templates);
+        $this->template = current($templates);
     }
 
-    /**
-     * @return string
-     */
     public function getTemplate(): string
     {
         return $this->template;

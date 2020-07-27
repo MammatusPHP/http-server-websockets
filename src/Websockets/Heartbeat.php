@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace ReactiveApps\Command\HttpServer\Rpc;
 
 use React\Promise\PromiseInterface;
+
 use function React\Promise\resolve;
 
 final class Heartbeat

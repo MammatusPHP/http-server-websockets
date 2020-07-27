@@ -1,6 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Mammatus\Http\Server\Configuration;
+
+use function assert;
 
 final class Server
 {
@@ -10,7 +14,7 @@ final class Server
 
     public function __construct(Vhost $vhost, Bus ...$busses)
     {
-        $this->vhost = $vhost;
+        $this->vhost  = $vhost;
         $this->busses = $busses;
     }
 
@@ -35,6 +39,7 @@ final class Server
     public function webroot(): string
     {
         assert($this->vhost->webroot() instanceof WebrootPath);
+
         return $this->vhost->webroot()->path();
     }
 }

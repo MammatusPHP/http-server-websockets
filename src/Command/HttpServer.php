@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace ReactiveApps\Command\HttpServer\Command;
 
@@ -10,6 +12,7 @@ use ReactiveApps\Command\Command;
 use ReactiveApps\LifeCycleEvents\Promise\Shutdown;
 use WyriHaximus\Annotations\Coroutine;
 use WyriHaximus\PSR3\CallableThrowableLogger\CallableThrowableLogger;
+
 use function React\Promise\resolve;
 
 /**
@@ -17,31 +20,25 @@ use function React\Promise\resolve;
  */
 final class HttpServer implements Command
 {
-    const COMMAND = 'http-server';
+    public const COMMAND = 'http-server';
 
-    /** @var LoggerInterface */
-    private $logger;
+    private LoggerInterface $logger;
 
-    /** @var SocketServerInterface */
-    private $socket;
+    private SocketServerInterface $socket;
 
     /** @var callable[] */
-    private $middleware;
+    private array $middleware;
 
-    /** @var Shutdown */
-    private $shutdownEventPromise;
+    private Shutdown $shutdownEventPromise;
 
     /**
-     * @param LoggerInterface       $logger
-     * @param SocketServerInterface $socket
-     * @param callable[]            $middleware
-     * @param Shutdown              $shutdownEventPromise
+     * @param callable[] $middleware
      */
     public function __construct(LoggerInterface $logger, SocketServerInterface $socket, array $middleware, Shutdown $shutdownEventPromise)
     {
-        $this->logger = $logger;
-        $this->socket = $socket;
-        $this->middleware = $middleware;
+        $this->logger               = $logger;
+        $this->socket               = $socket;
+        $this->middleware           = $middleware;
         $this->shutdownEventPromise = $shutdownEventPromise;
     }
 

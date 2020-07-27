@@ -1,22 +1,20 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Mammatus\Http\Server\Websockets;
 
 final class Realm
 {
-    /** @var string */
-    private $name;
+    private string $name;
 
-    /** @var RealmAuth */
-    private $auth;
+    private RealmAuth $auth;
 
     /** @var Rpc[] */
-    private $rpcs = [];
+    private array $rpcs = [];
 
     /**
-     * @param string    $name
-     * @param RealmAuth $auth
-     * @param Rpc[]     $rpcs
+     * @param Rpc[] $rpcs
      */
     public function __construct(string $name, RealmAuth $auth, array $rpcs)
     {

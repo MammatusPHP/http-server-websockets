@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace ReactiveApps\Command\HttpServer\Routing;
 
@@ -7,13 +9,21 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use ReactiveApps\Command\HttpServer\Annotations\Method;
 use ReactiveApps\Command\HttpServer\Annotations\Routes;
 use ReactiveApps\Command\HttpServer\Annotations\Template;
+use ReflectionClass;
 use Roave\BetterReflection\BetterReflection;
 use Roave\BetterReflection\Reflector\ClassReflector;
 use Roave\BetterReflection\SourceLocator\Type\SingleFileSourceLocator;
+
+use function array_key_exists;
+use function array_keys;
+use function assert;
+use function get_class;
+use function is_iterable;
+use function Safe\glob;
+use function strpos;
 use function WyriHaximus\get_in_packages_composer_with_path;
 use function WyriHaximus\iteratorOrArrayToArray;
 use function WyriHaximus\toChildProcessOrNotToChildProcess;
-use function Safe\glob;
 use function WyriHaximus\toCoroutineOrNotToCoroutine;
 use function WyriHaximus\toThreadOrNotToThread;
 
@@ -25,7 +35,7 @@ final class Collector
     public static function collect(): iterable
     {
         yield from self::locateRoutes(
-            \array_keys(
+            array_keys(
                 iteratorOrArrayToArray(
                     get_in_packages_composer_with_path('extra.reactive-apps.http-controller')
                 )
@@ -42,9 +52,10 @@ final class Collector
 
     private static function locateRoute(string $controller): iterable
     {
-        if (\strpos($controller, '*') !== false) {
-            /** @var iterable $files */
+        if (strpos($controller, '*') !== false) {
             $files = glob($controller);
+            assert(is_iterable($files));
+
             yield from self::locateRoutes($files);
 
             return;
@@ -57,16 +68,16 @@ final class Collector
     {
         $annotationReader = new AnnotationReader();
         $betterReflection = new BetterReflection();
-        $astLocator = $betterReflection->astLocator();
-        $reflector = new ClassReflector(new SingleFileSourceLocator($controller, $astLocator));
+        $astLocator       = $betterReflection->astLocator();
+        $reflector        = new ClassReflector(new SingleFileSourceLocator($controller, $astLocator));
         foreach ($reflector->getAllClasses() as $class) {
             foreach ($class->getMethods() as $method) {
-                $annotations = (new  Collection($annotationReader->getMethodAnnotations((new \ReflectionClass($class->getName()))->getMethod($method->getShortName()))))
-                    ->indexBy(function (object $annotation) {
-                        return \get_class($annotation);
+                $annotations = (new Collection($annotationReader->getMethodAnnotations((new ReflectionClass($class->getName()))->getMethod($method->getShortName()))))
+                    ->indexBy(static function (object $annotation) {
+                        return get_class($annotation);
                     })->toArray();
 
-                if (!array_key_exists(Method::class, $annotations) || !array_key_exists(Routes::class, $annotations)) {
+                if (! array_key_exists(Method::class, $annotations) || ! array_key_exists(Routes::class, $annotations)) {
                     continue;
                 }
 

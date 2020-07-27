@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Mammatus\Http\Server\Composer;
 
@@ -20,8 +22,6 @@ use Mammatus\Http\Server\Configuration\Bus;
 use Mammatus\Http\Server\Configuration\Handler;
 use Mammatus\Http\Server\Configuration\Server;
 use Mammatus\Http\Server\Configuration\Vhost;
-use Mammatus\Http\Server\HealthCheck\FetchHealtz;
-use Mammatus\Http\Server\HealthCheck\HealthCheckVhost;
 use React\EventLoop\StreamSelectLoop;
 use Roave\BetterReflection\BetterReflection;
 use Roave\BetterReflection\Reflection\ReflectionClass;
@@ -31,15 +31,21 @@ use Roave\BetterReflection\SourceLocator\Type\Composer\Factory\MakeLocatorForCom
 use Roave\BetterReflection\SourceLocator\Type\Composer\Psr\Exception\InvalidPrefixMapping;
 use Rx\Observable;
 use Throwable;
+
 use function ApiClients\Tools\Rx\observableFromArray;
 use function array_key_exists;
+use function array_map;
+use function array_values;
+use function assert;
 use function Clue\React\Block\await;
 use function count;
 use function dirname;
 use function explode;
 use function file_exists;
+use function get_class;
 use function is_array;
 use function is_string;
+use function is_subclass_of;
 use function microtime;
 use function round;
 use function rtrim;
@@ -48,11 +54,11 @@ use function Safe\file_get_contents;
 use function Safe\file_put_contents;
 use function Safe\mkdir;
 use function Safe\sprintf;
-use function var_export;
 use function WyriHaximus\getIn;
 use function WyriHaximus\iteratorOrArrayToArray;
 use function WyriHaximus\listClassesInDirectories;
 use function WyriHaximus\Twig\render;
+
 use const DIRECTORY_SEPARATOR;
 
 final class Installer implements PluginInterface, EventSubscriberInterface
@@ -122,12 +128,10 @@ final class Installer implements PluginInterface, EventSubscriberInterface
             file_get_contents(
                 self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage()) . '/etc/AbstractConfiguration.php.twig'
             ),
-            [
-                'servers' => $vhosts,
-            ]
+            ['servers' => $vhosts]
         );
 
-        $installPath   = self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage())
+        $installPath = self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage())
             . '/src/Generated/AbstractConfiguration.php';
 
         file_put_contents($installPath, $classContents);
@@ -160,7 +164,7 @@ final class Installer implements PluginInterface, EventSubscriberInterface
     private static function findAllVhosts(Composer $composer, IOInterface $io): array
     {
         $annotationReader = new AnnotationReader();
-        $vendorDir = $composer->getConfig()->get('vendor-dir');
+        $vendorDir        = $composer->getConfig()->get('vendor-dir');
         retry:
         try {
             $classReflector = new ClassReflector(
@@ -174,12 +178,12 @@ final class Installer implements PluginInterface, EventSubscriberInterface
         $result     = [];
         $packages   = $composer->getRepositoryManager()->getLocalRepository()->getCanonicalPackages();
         $packages[] = $composer->getPackage();
-        $classes = fn () => self::classes($packages, $vendorDir, $classReflector, $io);
-        ($classes())->filter(static function (ReflectionClass $class): bool {
+        $classes    = static fn () => self::classes($packages, $vendorDir, $classReflector, $io);
+        $classes()->filter(static function (ReflectionClass $class): bool {
             return $class->implementsInterface(Vhost::class);
         })->
-            map(fn (ReflectionClass $class): string => $class->getName())->
-            map(fn (string $vhost): Vhost => new $vhost())->
+            map(static fn (ReflectionClass $class): string => $class->getName())->
+            map(static fn (string $vhost): Vhost => new $vhost())->
             toArray()->
             toPromise()->
         then(static function (array $flatVhosts) use (&$result, $io, $classes, $annotationReader): void {
@@ -191,21 +195,24 @@ final class Installer implements PluginInterface, EventSubscriberInterface
                 $vhosts[] = new Server(
                     $vhost,
                     ...await(
-                        ($classes())->flatMap(static function (ReflectionClass $class) use ($annotationReader): Observable {
+                        $classes()->flatMap(static function (ReflectionClass $class) use ($annotationReader): Observable {
                             $annotations = [];
                             foreach ($annotationReader->getClassAnnotations(new \ReflectionClass($class->getName())) as $annotation) {
                                 $annotations[get_class($annotation)] = $annotation;
                             }
-                            return observableFromArray([[
-                                'class' => $class->getName(),
-                                'annotations' => $annotations,
-                            ]]);
+
+                            return observableFromArray([
+                                [
+                                    'class' => $class->getName(),
+                                    'annotations' => $annotations,
+                                ],
+                            ]);
                         })->filter(static function (array $classNAnnotations): bool {
-                            if (!array_key_exists(VhostAnnotation::class, $classNAnnotations['annotations'])) {
+                            if (! array_key_exists(VhostAnnotation::class, $classNAnnotations['annotations'])) {
                                 return false;
                             }
 
-                            if (!array_key_exists(BusAnnotation::class, $classNAnnotations['annotations'])) {
+                            if (! array_key_exists(BusAnnotation::class, $classNAnnotations['annotations'])) {
                                 return false;
                             }
 
@@ -216,19 +223,20 @@ final class Installer implements PluginInterface, EventSubscriberInterface
                             }
 
                             return false;
-                        })->filter(function (array $classNAnnotations) use ($vhost): bool {
+                        })->filter(static function (array $classNAnnotations) use ($vhost): bool {
                             return $classNAnnotations['annotations'][VhostAnnotation::class]->vhost() === $vhost->name();
-                        })->toArray()->toPromise()->then(function (array $handlers) {
+                        })->toArray()->toPromise()->then(static function (array $handlers) {
                             $busses = [];
                             foreach ($handlers as $handler) {
                                 $busses[$handler['annotations'][BusAnnotation::class]->bus()][] = $handler;
                             }
+
                             $busInstances = [];
                             foreach ($busses as $name => $handlers) {
                                 $busInstances[] = new Bus(
                                     $name,
                                     ...array_map(
-                                        function (array $handler) {
+                                        static function (array $handler) {
                                             foreach ($handler['annotations'] as $annotation) {
                                                 if (is_subclass_of($annotation, Routing\Endpoint::class)) {
                                                     $endpoint = $annotation;
@@ -259,7 +267,7 @@ final class Installer implements PluginInterface, EventSubscriberInterface
 
             $result = $vhosts;
         })->then(null, static function (Throwable $throwable) use ($io): void {
-            $io->write(sprintf('<info>mammatus/http-server:</info> Unexpected error: <fg=red>%s</>', (string)$throwable));
+            $io->write(sprintf('<info>mammatus/http-server:</info> Unexpected error: <fg=red>%s</>', (string) $throwable));
         });
 
         return $result;

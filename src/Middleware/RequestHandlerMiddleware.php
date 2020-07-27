@@ -1,19 +1,21 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace ReactiveApps\Command\HttpServer\Middleware;
 
 use Psr\Http\Message\ServerRequestInterface;
 use React\Promise\PromiseInterface;
-use function React\Promise\resolve;
 use ReactiveApps\Command\HttpServer\RequestHandlerFactory;
+
+use function React\Promise\resolve;
 
 /**
  * @internal
  */
 final class RequestHandlerMiddleware
 {
-    /** @var RequestHandlerFactory */
-    private $requestHandlerFactory;
+    private RequestHandlerFactory $requestHandlerFactory;
 
     public function __construct(RequestHandlerFactory $requestHandlerFactory)
     {

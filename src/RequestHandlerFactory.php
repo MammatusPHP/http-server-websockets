@@ -1,14 +1,17 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace ReactiveApps\Command\HttpServer;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
+use function explode;
+
 final class RequestHandlerFactory
 {
-    /** @var ContainerInterface */
-    private $container;
+    private ContainerInterface $container;
 
     public function __construct(ContainerInterface $container)
     {
@@ -23,7 +26,7 @@ final class RequestHandlerFactory
         }
 
         return (function (string $requestHandler) {
-            [$controller, $method] = \explode('::', $requestHandler);
+            [$controller, $method] = explode('::', $requestHandler);
 
             return [
                 $this->container->get($controller),

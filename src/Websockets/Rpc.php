@@ -1,18 +1,18 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Mammatus\Http\Server\Websockets;
 
 final class Rpc
 {
-    /** @var string */
-    private $name;
+    private string $name;
 
-    /** @var string */
-    private $command;
+    private string $command;
 
     public function __construct(string $name, string $command)
     {
-        $this->name = $name;
+        $this->name    = $name;
         $this->command = $command;
     }
 
