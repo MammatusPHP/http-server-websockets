@@ -21,7 +21,6 @@
         "mammatus/http-server-contracts": "dev-master",
         "mammatus/http-server-webroot": "dev-master",
         "mammatus/life-cycle-events": "dev-master",
-        "mammatus/metrics-prometheus": "dev-master",
         "mezzio/mezzio-helpers": "^5.3",
         "mezzio/mezzio-router": "^3.1",
         "middlewares/access-log": "^1.0",

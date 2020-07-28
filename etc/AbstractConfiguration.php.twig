@@ -18,6 +18,7 @@ use League\Tactician\CommandBus;
 use League\Tactician\Container\ContainerLocator;
 use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
+use League\Tactician\Handler\Locator\InMemoryLocator;
 use League\Tactician\Handler\MethodNameInflector\HandleInflector;
 use Mammatus\Http\Server\CommandBus\ChannelStreamFactorySubscriber;
 use Mammatus\Http\Server\CommandBus\CommandHandlerMiddlewareProxy;
@@ -119,29 +120,18 @@ abstract class AbstractConfiguration
         {% for bus in server.busses() %}
         $tactician_command_handler_middleware_{{ server.vhost().name() }}_{{ bus.name() }} = new CommandHandlerMiddleware(
             new ClassNameExtractor(),
-            new ContainerLocator(
-                $container,
+            new InMemoryLocator(
                 [
                     {% for handler in bus.handlers() %}
-                    \{{ handler.command() }}::class => \{{ handler.commandHandler() }}::class,
+                    \{{ handler.command() }}::class => new \{{ handler.commandHandler() }}(),
+        {#\{{ handler.command() }}::class => \{{ handler.commandHandler() }}::class,#}
                     {% endfor %}
                 ]
             ),
             new HandleInflector()
         );
 
-        $input_{{ server.vhost().name() }}_{{ bus.name() }} = new Channel(Channel::Infinite);
-        $output_{{ server.vhost().name() }}_{{ bus.name() }} = new Channel(Channel::Infinite);
-
-        $channelStreamFactory->stream(
-            $output_{{ server.vhost().name() }}_{{ bus.name() }}
-        )->subscribe(new ChannelStreamFactorySubscriber($input_{{ server.vhost().name() }}_{{ bus.name() }}, $tactician_command_handler_middleware_{{ server.vhost().name() }}_{{ bus.name() }}));
-
-        $tactician_command_handler_middleware_thread_{{ server.vhost().name() }}_{{ bus.name() }} = new CommandHandlerMiddlewareProxy((string)$input_{{ server.vhost().name() }}_{{ bus.name() }}, (string)$output_{{ server.vhost().name() }}_{{ bus.name() }});
-        $tactician_{{ server.vhost().name() }}_{{ bus.name() }} = new CommandBus([
-            $tactician_command_handler_middleware_thread_{{ server.vhost().name() }}_{{ bus.name() }},
-        ]);
-        $serviceBus_{{ server.vhost().name() }}_{{ bus.name() }} = new ServiceBus($tactician_{{ server.vhost().name() }}_{{ bus.name() }});
+        $serviceBus_{{ server.vhost().name() }}_{{ bus.name() }} = new ServiceBus(new CommandBus([$tactician_command_handler_middleware_{{ server.vhost().name() }}_{{ bus.name() }}]));
         {% for handler in bus.handlers() %}
         $routeCollector_{{ server.vhost().name() }}->route('{{ handler.path() }}', new RequestHandlerMiddleware(new \{{ handler.handler() }}(new ExecuteQuery($serviceBus_{{ server.vhost().name() }}_{{ bus.name() }}, $namedConstructor, \{{ handler.command() }}::class), $responseFactory)), ['{{ handler.methods()|join("', '") }}']);
         {% endfor %}

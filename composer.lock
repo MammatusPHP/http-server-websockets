@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "db30e336ba746983d13e41aeea13a0ab",
+    "content-hash": "dd82a2fce963aed1c082b79e36149570",
     "packages": [
         {
             "name": "ancarda/psr7-string-stream",
@@ -174,16 +174,16 @@
         },
         {
             "name": "cakephp/collection",
-            "version": "3.9.0",
+            "version": "3.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/collection.git",
-                "reference": "387cc755ef04a98f8a4461281090465238421d69"
+                "reference": "ddfff69d7bfa8b9b03eb7150097b0b06258fcaa3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/collection/zipball/387cc755ef04a98f8a4461281090465238421d69",
-                "reference": "387cc755ef04a98f8a4461281090465238421d69",
+                "url": "https://api.github.com/repos/cakephp/collection/zipball/ddfff69d7bfa8b9b03eb7150097b0b06258fcaa3",
+                "reference": "ddfff69d7bfa8b9b03eb7150097b0b06258fcaa3",
                 "shasum": ""
             },
             "require": {
@@ -216,7 +216,7 @@
                 "collections",
                 "iterators"
             ],
-            "time": "2020-06-13T12:25:53+00:00"
+            "time": "2020-07-05T02:00:29+00:00"
         },
         {
             "name": "cakephp/core",
@@ -320,6 +320,59 @@
                 "utility"
             ],
             "time": "2020-06-22T08:33:27+00:00"
+        },
+        {
+            "name": "cboden/ratchet",
+            "version": "v0.4.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ratchetphp/Ratchet.git",
+                "reference": "57721e1f184f9e29378fc5363867c47ddda743fd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ratchetphp/Ratchet/zipball/57721e1f184f9e29378fc5363867c47ddda743fd",
+                "reference": "57721e1f184f9e29378fc5363867c47ddda743fd",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/psr7": "^1.0",
+                "php": ">=5.4.2",
+                "ratchet/rfc6455": "^0.2",
+                "react/socket": "^1.0 || ^0.8 || ^0.7 || ^0.6 || ^0.5",
+                "symfony/http-foundation": "^2.6|^3.0|^4.0|^5.0",
+                "symfony/routing": "^2.6|^3.0|^4.0|^5.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ratchet\\": "src/Ratchet"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Chris Boden",
+                    "email": "cboden@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP WebSocket library",
+            "homepage": "http://socketo.me",
+            "keywords": [
+                "Ratchet",
+                "WebSockets",
+                "server",
+                "sockets",
+                "websocket"
+            ],
+            "time": "2020-01-27T23:08:40+00:00"
         },
         {
             "name": "chimera/bus-tactician",
@@ -952,6 +1005,136 @@
                 "response"
             ],
             "time": "2020-02-05T20:36:27+00:00"
+        },
+        {
+            "name": "guzzlehttp/psr7",
+            "version": "1.6.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guzzle/psr7.git",
+                "reference": "239400de7a173fe9901b9ac7c06497751f00727a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/239400de7a173fe9901b9ac7c06497751f00727a",
+                "reference": "239400de7a173fe9901b9ac7c06497751f00727a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0",
+                "psr/http-message": "~1.0",
+                "ralouphie/getallheaders": "^2.0.5 || ^3.0.0"
+            },
+            "provide": {
+                "psr/http-message-implementation": "1.0"
+            },
+            "require-dev": {
+                "ext-zlib": "*",
+                "phpunit/phpunit": "~4.8.36 || ^5.7.27 || ^6.5.8"
+            },
+            "suggest": {
+                "zendframework/zend-httphandlerrunner": "Emit PSR-7 responses"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.6-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "GuzzleHttp\\Psr7\\": "src/"
+                },
+                "files": [
+                    "src/functions_include.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dowling",
+                    "email": "mtdowling@gmail.com",
+                    "homepage": "https://github.com/mtdowling"
+                },
+                {
+                    "name": "Tobias Schultze",
+                    "homepage": "https://github.com/Tobion"
+                }
+            ],
+            "description": "PSR-7 message implementation that also provides common utility methods",
+            "keywords": [
+                "http",
+                "message",
+                "psr-7",
+                "request",
+                "response",
+                "stream",
+                "uri",
+                "url"
+            ],
+            "time": "2019-07-01T23:21:34+00:00"
+        },
+        {
+            "name": "hansott/psr7-cookies",
+            "version": "2.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hansott/psr7-cookies.git",
+                "reference": "2c43fc7720b475289a150ec3be8b81d283da768b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hansott/psr7-cookies/zipball/2c43fc7720b475289a150ec3be8b81d283da768b",
+                "reference": "2c43fc7720b475289a150ec3be8b81d283da768b",
+                "shasum": ""
+            },
+            "require": {
+                "php": "~7.0",
+                "psr/http-message": "^1.0"
+            },
+            "require-dev": {
+                "guzzlehttp/psr7": "^1.3",
+                "phpunit/phpunit": "~4.0||~5.0",
+                "scrutinizer/ocular": "~1.1",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "HansOtt\\PSR7Cookies\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Hans Ott",
+                    "email": "hansott@hotmail.be",
+                    "homepage": "https://hansott.github.io",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PSR-7 Cookies",
+            "homepage": "https://github.com/hansott/psr7-cookies",
+            "keywords": [
+                "cookies",
+                "fig",
+                "hansott",
+                "http-message",
+                "psr7-cookies",
+                "setcookie"
+            ],
+            "time": "2019-03-23T15:17:46+00:00"
         },
         {
             "name": "icecave/repr",
@@ -1839,76 +2022,6 @@
                 }
             ],
             "time": "2020-04-04T18:56:44+00:00"
-        },
-        {
-            "name": "mammatus/metrics-prometheus",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/MammatusPHP/metrics-prometheus.git",
-                "reference": "d85bbeac482825b57054db6d94e4b684adcd2651"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/MammatusPHP/metrics-prometheus/zipball/d85bbeac482825b57054db6d94e4b684adcd2651",
-                "reference": "d85bbeac482825b57054db6d94e4b684adcd2651",
-                "shasum": ""
-            },
-            "require": {
-                "chimera/foundation": "^0.3.0",
-                "chimera/mapping": "^0.3.0",
-                "mammatus/http-server-annotations": "dev-master",
-                "mammatus/http-server-contracts": "dev-master",
-                "mammatus/http-server-webroot": "dev-master",
-                "php": "^7.4",
-                "react-inspector/http-middleware-printer": "^1.0",
-                "react-inspector/metrics": "^1.0",
-                "react-inspector/prometheus-printer": "^1.0",
-                "react/promise": "^2.8",
-                "ringcentral/psr7": "^1.3",
-                "wyrihaximus/constants": "^1.5"
-            },
-            "require-dev": {
-                "clue/buzz-react": "^2.7",
-                "wyrihaximus/async-test-utilities": "^2.1"
-            },
-            "type": "library",
-            "extra": {
-                "mammatus": {
-                    "http": {
-                        "server": {
-                            "has-vhosts": true
-                        }
-                    }
-                },
-                "php-di-definitions": {
-                    "di": [
-                        "etc/di/*.php"
-                    ]
-                },
-                "wyrihaximus": {
-                    "broadcast": {
-                        "has-listeners": true
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Mammatus\\Metrics\\Prometheus\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "🎰 Metrics server using the prometheus format",
-            "funding": [
-                {
-                    "url": "https://github.com/WyriHaximus",
-                    "type": "github"
-                }
-            ],
-            "time": "2020-07-04T15:50:59+00:00"
         },
         {
             "name": "mezzio/mezzio-helpers",
@@ -3765,6 +3878,46 @@
             "time": "2020-03-23T09:12:05+00:00"
         },
         {
+            "name": "ralouphie/getallheaders",
+            "version": "3.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ralouphie/getallheaders.git",
+                "reference": "120b605dfeb996808c31b6477290a714d356e822"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ralouphie/getallheaders/zipball/120b605dfeb996808c31b6477290a714d356e822",
+                "reference": "120b605dfeb996808c31b6477290a714d356e822",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "^2.1",
+                "phpunit/phpunit": "^5 || ^6.5"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/getallheaders.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ralph Khattar",
+                    "email": "ralph.khattar@gmail.com"
+                }
+            ],
+            "description": "A polyfill for getallheaders.",
+            "time": "2019-03-08T08:55:37+00:00"
+        },
+        {
             "name": "ramsey/uuid",
             "version": "3.9.3",
             "source": {
@@ -3850,6 +4003,54 @@
                 "uuid"
             ],
             "time": "2020-02-21T04:36:14+00:00"
+        },
+        {
+            "name": "ratchet/rfc6455",
+            "version": "v0.2.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ratchetphp/RFC6455.git",
+                "reference": "879e48c840f8dbc296d68d6a5030673df79bd916"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ratchetphp/RFC6455/zipball/879e48c840f8dbc296d68d6a5030673df79bd916",
+                "reference": "879e48c840f8dbc296d68d6a5030673df79bd916",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/psr7": "^1.0",
+                "php": ">=5.4.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.8.*",
+                "react/socket": "^1.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ratchet\\RFC6455\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Chris Boden",
+                    "email": "cboden@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "RFC6455 WebSocket protocol handler",
+            "homepage": "http://socketo.me",
+            "keywords": [
+                "WebSockets",
+                "rfc6455",
+                "websocket"
+            ],
+            "time": "2019-12-15T10:18:18+00:00"
         },
         {
             "name": "react-inspector/event-loop",
@@ -3956,59 +4157,6 @@
                 }
             ],
             "time": "2020-03-20T23:40:17+00:00"
-        },
-        {
-            "name": "react-inspector/http-middleware-printer",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/reactphp-inspector/http-middleware-printer.git",
-                "reference": "cfdc7a3a147aa5c15d73b9ae12cdac4b3592ddf3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/reactphp-inspector/http-middleware-printer/zipball/cfdc7a3a147aa5c15d73b9ae12cdac4b3592ddf3",
-                "reference": "cfdc7a3a147aa5c15d73b9ae12cdac4b3592ddf3",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.4",
-                "psr/http-message": "^1.0",
-                "react-inspector/metric": "^1.0",
-                "react-inspector/metrics": "^1.0",
-                "react-inspector/printer": "^1.0",
-                "react/cache": "^1.0",
-                "react/promise": "^2.7",
-                "ringcentral/psr7": "^1.2.2"
-            },
-            "require-dev": {
-                "wyrihaximus/async-test-utilities": "^2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "ReactInspector\\Http\\Middleware\\Printer\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Cees-Jan Kiewiet",
-                    "email": "ceesjank@gmail.com",
-                    "homepage": "http://wyrihaximus.net/"
-                }
-            ],
-            "description": "📰🏮 HTTP Middleware Metrics Printer",
-            "funding": [
-                {
-                    "url": "https://github.com/WyriHaximus",
-                    "type": "github"
-                }
-            ],
-            "time": "2020-03-22T22:07:40+00:00"
         },
         {
             "name": "react-inspector/memory-usage",
@@ -4195,93 +4343,6 @@
                 }
             ],
             "time": "2020-03-18T17:13:22+00:00"
-        },
-        {
-            "name": "react-inspector/printer",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/reactphp-inspector/printer.git",
-                "reference": "4b69d407f908f3fa1497bf5d417b47e0b90123b6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/reactphp-inspector/printer/zipball/4b69d407f908f3fa1497bf5d417b47e0b90123b6",
-                "reference": "4b69d407f908f3fa1497bf5d417b47e0b90123b6",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.4",
-                "react-inspector/metric": "^1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "ReactInspector\\Printer\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Cees-Jan Kiewiet",
-                    "email": "ceesjank@gmail.com",
-                    "homepage": "http://wyrihaximus.net/"
-                }
-            ],
-            "description": "🖨️ Metrics Printer",
-            "time": "2020-03-19T18:22:25+00:00"
-        },
-        {
-            "name": "react-inspector/prometheus-printer",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/reactphp-inspector/prometheus-printer.git",
-                "reference": "51045d4ba68f72f5f69d0f031736df821ecd25f0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/reactphp-inspector/prometheus-printer/zipball/51045d4ba68f72f5f69d0f031736df821ecd25f0",
-                "reference": "51045d4ba68f72f5f69d0f031736df821ecd25f0",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.4",
-                "react-inspector/metric": "^1.0",
-                "react-inspector/metrics": "^1.0",
-                "react-inspector/printer": "^1.0"
-            },
-            "require-dev": {
-                "wyrihaximus/async-test-utilities": "^2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "ReactInspector\\Printer\\Prometheus\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Cees-Jan Kiewiet",
-                    "email": "ceesjank@gmail.com",
-                    "homepage": "http://wyrihaximus.net/"
-                }
-            ],
-            "description": "📜 Metrics Printer in Prometheus format",
-            "funding": [
-                {
-                    "url": "https://github.com/WyriHaximus",
-                    "type": "github"
-                }
-            ],
-            "time": "2020-03-20T22:41:00+00:00"
         },
         {
             "name": "react-inspector/stream",
@@ -4552,7 +4613,7 @@
             "dist": {
                 "type": "path",
                 "url": "psr-15-adapter-master",
-                "reference": "d85fc410a8ea6703d06610c479e671b8b5ea51a1"
+                "reference": "212d204e0a07aa7c29d104035c38f31841466fcc"
             },
             "require": {
                 "ancarda/psr7-string-stream": "^1.3",
@@ -4567,7 +4628,7 @@
                 "react-parallel/streams": "dev-master",
                 "react-parallel/worker-pool": "dev-master",
                 "react/event-loop": "^1.1",
-                "react/http": "^1.0",
+                "react/http": "^0.8.6",
                 "react/promise": "^2.7",
                 "reactivex/rxphp": "^2.0",
                 "wyrihaximus/constants": "^1.5",
@@ -4914,34 +4975,29 @@
         },
         {
             "name": "react/http",
-            "version": "v1.0.0",
+            "version": "v0.8.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/http.git",
-                "reference": "865694453c95122f8972b9ed7961efb3c517fc5e"
+                "reference": "9aa446fd86745403a09c315c90d4e464fd84382b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/reactphp/http/zipball/865694453c95122f8972b9ed7961efb3c517fc5e",
-                "reference": "865694453c95122f8972b9ed7961efb3c517fc5e",
+                "url": "https://api.github.com/repos/reactphp/http/zipball/9aa446fd86745403a09c315c90d4e464fd84382b",
+                "reference": "9aa446fd86745403a09c315c90d4e464fd84382b",
                 "shasum": ""
             },
             "require": {
                 "evenement/evenement": "^3.0 || ^2.0 || ^1.0",
                 "php": ">=5.3.0",
-                "psr/http-message": "^1.0",
-                "react/event-loop": "^1.0 || ^0.5",
                 "react/promise": "^2.3 || ^1.2.1",
                 "react/promise-stream": "^1.1",
-                "react/socket": "^1.1",
-                "react/stream": "^1.0 || ^0.7.5",
+                "react/socket": "^1.0 || ^0.8.3",
+                "react/stream": "^1.0 || ^0.7.1",
                 "ringcentral/psr7": "^1.2"
             },
             "require-dev": {
                 "clue/block-react": "^1.1",
-                "clue/http-proxy-react": "^1.3",
-                "clue/reactphp-ssh-proxy": "^1.0",
-                "clue/socks-react": "^1.0",
                 "phpunit/phpunit": "^9.0 || ^5.7 || ^4.8.35"
             },
             "type": "library",
@@ -4954,43 +5010,16 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Christian Lück",
-                    "email": "christian@clue.engineering",
-                    "homepage": "https://clue.engineering/"
-                },
-                {
-                    "name": "Cees-Jan Kiewiet",
-                    "email": "reactphp@ceesjankiewiet.nl",
-                    "homepage": "https://wyrihaximus.net/"
-                },
-                {
-                    "name": "Jan Sorgalla",
-                    "email": "jsorgalla@gmail.com",
-                    "homepage": "https://sorgalla.com/"
-                },
-                {
-                    "name": "Chris Boden",
-                    "email": "cboden@gmail.com",
-                    "homepage": "https://cboden.dev/"
-                }
-            ],
-            "description": "Event-driven, streaming HTTP client and server implementation for ReactPHP",
+            "description": "Event-driven, streaming plaintext HTTP and secure HTTPS server for ReactPHP",
             "keywords": [
-                "async",
-                "client",
                 "event-driven",
                 "http",
-                "http client",
-                "http server",
                 "https",
-                "psr-7",
                 "reactphp",
                 "server",
                 "streaming"
             ],
-            "time": "2020-07-11T13:29:43+00:00"
+            "time": "2020-07-05T11:32:28+00:00"
         },
         {
             "name": "react/promise",
@@ -5609,33 +5638,32 @@
         },
         {
             "name": "roave/better-reflection",
-            "version": "4.9.0",
+            "version": "4.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/BetterReflection.git",
-                "reference": "6d1bd5746896996f165dc4ea47003167da965583"
+                "reference": "aa017e698b47feed410721f3d20e2bacfcba59d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/BetterReflection/zipball/6d1bd5746896996f165dc4ea47003167da965583",
-                "reference": "6d1bd5746896996f165dc4ea47003167da965583",
+                "url": "https://api.github.com/repos/Roave/BetterReflection/zipball/aa017e698b47feed410721f3d20e2bacfcba59d5",
+                "reference": "aa017e698b47feed410721f3d20e2bacfcba59d5",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "jetbrains/phpstorm-stubs": "2019.3",
-                "nikic/php-parser": "^4.5.0",
-                "php": ">=7.4.1,<7.5.0",
+                "nikic/php-parser": "^4.4.0",
+                "php": ">=7.2.0,<7.5.0",
                 "phpdocumentor/reflection-docblock": "^5.1.0",
-                "phpdocumentor/type-resolver": "^1.3.0",
+                "phpdocumentor/type-resolver": "^1.1.0",
                 "roave/signature": "^1.0"
             },
             "require-dev": {
-                "doctrine/coding-standard": "^8.0.0",
-                "infection/infection": "^0.16.4",
+                "doctrine/coding-standard": "^7.0.2",
                 "phpstan/phpstan": "^0.12.25",
-                "phpunit/phpunit": "^9.2.5",
-                "vimeo/psalm": "3.12.1"
+                "phpunit/phpunit": "^8.5.4",
+                "vimeo/psalm": "3.11.2"
             },
             "suggest": {
                 "composer/composer": "Required to use the ComposerSourceLocator"
@@ -5678,7 +5706,7 @@
                 }
             ],
             "description": "Better Reflection - an improved code reflection API",
-            "time": "2020-07-10T15:17:35+00:00"
+            "time": "2020-05-28T14:10:32+00:00"
         },
         {
             "name": "roave/signature",
@@ -5753,6 +5781,305 @@
             ],
             "description": "Formats byte values as human-readable strings.",
             "time": "2016-01-03T23:54:33+00:00"
+        },
+        {
+            "name": "symfony/deprecation-contracts",
+            "version": "v2.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/deprecation-contracts.git",
+                "reference": "5e20b83385a77593259c9f8beb2c43cd03b2ac14"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/deprecation-contracts/zipball/5e20b83385a77593259c9f8beb2c43cd03b2ac14",
+                "reference": "5e20b83385a77593259c9f8beb2c43cd03b2ac14",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1-dev"
+                },
+                "thanks": {
+                    "name": "symfony/contracts",
+                    "url": "https://github.com/symfony/contracts"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "function.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "A generic function and convention to trigger deprecation notices",
+            "homepage": "https://symfony.com",
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-06-06T08:49:21+00:00"
+        },
+        {
+            "name": "symfony/event-dispatcher",
+            "version": "v4.4.11",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/event-dispatcher.git",
+                "reference": "6140fc7047dafc5abbe84ba16a34a86c0b0229b8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/6140fc7047dafc5abbe84ba16a34a86c0b0229b8",
+                "reference": "6140fc7047dafc5abbe84ba16a34a86c0b0229b8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.3",
+                "symfony/event-dispatcher-contracts": "^1.1"
+            },
+            "conflict": {
+                "symfony/dependency-injection": "<3.4"
+            },
+            "provide": {
+                "psr/event-dispatcher-implementation": "1.0",
+                "symfony/event-dispatcher-implementation": "1.1"
+            },
+            "require-dev": {
+                "psr/log": "~1.0",
+                "symfony/config": "^3.4|^4.0|^5.0",
+                "symfony/dependency-injection": "^3.4|^4.0|^5.0",
+                "symfony/expression-language": "^3.4|^4.0|^5.0",
+                "symfony/http-foundation": "^3.4|^4.0|^5.0",
+                "symfony/service-contracts": "^1.1|^2",
+                "symfony/stopwatch": "^3.4|^4.0|^5.0"
+            },
+            "suggest": {
+                "symfony/dependency-injection": "",
+                "symfony/http-kernel": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.4-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\EventDispatcher\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony EventDispatcher Component",
+            "homepage": "https://symfony.com",
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-06-18T17:59:13+00:00"
+        },
+        {
+            "name": "symfony/event-dispatcher-contracts",
+            "version": "v1.1.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/event-dispatcher-contracts.git",
+                "reference": "84e23fdcd2517bf37aecbd16967e83f0caee25a7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher-contracts/zipball/84e23fdcd2517bf37aecbd16967e83f0caee25a7",
+                "reference": "84e23fdcd2517bf37aecbd16967e83f0caee25a7",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.3"
+            },
+            "suggest": {
+                "psr/event-dispatcher": "",
+                "symfony/event-dispatcher-implementation": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1-dev"
+                },
+                "thanks": {
+                    "name": "symfony/contracts",
+                    "url": "https://github.com/symfony/contracts"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Contracts\\EventDispatcher\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Generic abstractions related to dispatching event",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "abstractions",
+                "contracts",
+                "decoupling",
+                "interfaces",
+                "interoperability",
+                "standards"
+            ],
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-07-06T13:19:58+00:00"
+        },
+        {
+            "name": "symfony/http-foundation",
+            "version": "v5.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/http-foundation.git",
+                "reference": "1f0d6627e680591c61e9176f04a0dc887b4e6702"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/1f0d6627e680591c61e9176f04a0dc887b4e6702",
+                "reference": "1f0d6627e680591c61e9176f04a0dc887b4e6702",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.5",
+                "symfony/deprecation-contracts": "^2.1",
+                "symfony/polyfill-mbstring": "~1.1",
+                "symfony/polyfill-php80": "^1.15"
+            },
+            "require-dev": {
+                "predis/predis": "~1.0",
+                "symfony/cache": "^4.4|^5.0",
+                "symfony/expression-language": "^4.4|^5.0",
+                "symfony/mime": "^4.4|^5.0"
+            },
+            "suggest": {
+                "symfony/mime": "To use the file extension guesser"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "5.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\HttpFoundation\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony HttpFoundation Component",
+            "homepage": "https://symfony.com",
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-07-23T10:04:31+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -5908,6 +6235,178 @@
             "time": "2020-07-14T12:35:20+00:00"
         },
         {
+            "name": "symfony/polyfill-php80",
+            "version": "v1.18.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/polyfill-php80.git",
+                "reference": "d87d5766cbf48d72388a9f6b85f280c8ad51f981"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/d87d5766cbf48d72388a9f6b85f280c8ad51f981",
+                "reference": "d87d5766cbf48d72388a9f6b85f280c8ad51f981",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0.8"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.18-dev"
+                },
+                "thanks": {
+                    "name": "symfony/polyfill",
+                    "url": "https://github.com/symfony/polyfill"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Polyfill\\Php80\\": ""
+                },
+                "files": [
+                    "bootstrap.php"
+                ],
+                "classmap": [
+                    "Resources/stubs"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ion Bazan",
+                    "email": "ion.bazan@gmail.com"
+                },
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony polyfill backporting some PHP 8.0+ features to lower PHP versions",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "compatibility",
+                "polyfill",
+                "portable",
+                "shim"
+            ],
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-07-14T12:35:20+00:00"
+        },
+        {
+            "name": "symfony/routing",
+            "version": "v5.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/routing.git",
+                "reference": "08c9a82f09d12ee048f85e76e0d783f82844eb5d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/routing/zipball/08c9a82f09d12ee048f85e76e0d783f82844eb5d",
+                "reference": "08c9a82f09d12ee048f85e76e0d783f82844eb5d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.5",
+                "symfony/deprecation-contracts": "^2.1",
+                "symfony/polyfill-php80": "^1.15"
+            },
+            "conflict": {
+                "symfony/config": "<5.0",
+                "symfony/dependency-injection": "<4.4",
+                "symfony/yaml": "<4.4"
+            },
+            "require-dev": {
+                "doctrine/annotations": "~1.2",
+                "psr/log": "~1.0",
+                "symfony/config": "^5.0",
+                "symfony/dependency-injection": "^4.4|^5.0",
+                "symfony/expression-language": "^4.4|^5.0",
+                "symfony/http-foundation": "^4.4|^5.0",
+                "symfony/yaml": "^4.4|^5.0"
+            },
+            "suggest": {
+                "doctrine/annotations": "For using the annotation loader",
+                "symfony/config": "For using the all-in-one router or any loader",
+                "symfony/expression-language": "For using expression matching",
+                "symfony/http-foundation": "For using a Symfony Request object",
+                "symfony/yaml": "For using the YAML loader"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "5.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Routing\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Routing Component",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "router",
+                "routing",
+                "uri",
+                "url"
+            ],
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-06-18T18:24:02+00:00"
+        },
+        {
             "name": "thecodingmachine/safe",
             "version": "v1.1.3",
             "source": {
@@ -6039,6 +6538,167 @@
             ],
             "description": "PHP core functions that throw exceptions instead of returning FALSE on error",
             "time": "2020-07-10T09:34:29+00:00"
+        },
+        {
+            "name": "thruway/client",
+            "version": "0.5.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thruway/client.git",
+                "reference": "532604ab58de1e271a368dae406685566c539c87"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thruway/client/zipball/532604ab58de1e271a368dae406685566c539c87",
+                "reference": "532604ab58de1e271a368dae406685566c539c87",
+                "shasum": ""
+            },
+            "require": {
+                "evenement/evenement": "^3.0 || ^2.0",
+                "psr/log": "^1.0",
+                "react/event-loop": "^1.0 || ^0.5 || ^0.4.3",
+                "react/promise-timer": "^1.2.1",
+                "voryx/thruway-common": "^1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.5.4",
+                "thruway/pawl-transport": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Thruway\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matt Bonneau",
+                    "email": "matt@bonneau.net",
+                    "role": "Developer"
+                },
+                {
+                    "name": "David Dan",
+                    "email": "davidwdan@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Thruway WAMP client",
+            "keywords": [
+                "Autobahn",
+                "WAMP",
+                "WAMP2",
+                "WebSockets",
+                "client"
+            ],
+            "time": "2018-04-09T12:18:12+00:00"
+        },
+        {
+            "name": "thruway/middleware",
+            "version": "0.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thruway/middleware.git",
+                "reference": "302df182c69768719b599332b6bb654ed2e286e4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thruway/middleware/zipball/302df182c69768719b599332b6bb654ed2e286e4",
+                "reference": "302df182c69768719b599332b6bb654ed2e286e4",
+                "shasum": ""
+            },
+            "require": {
+                "react/http": "^0.8.0",
+                "voryx/thruway": "^0.5.0",
+                "voryx/websocketmiddleware": "^1.0.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Thruway\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Matt Bonneau",
+                    "email": "matt@bonneau.net",
+                    "role": "Developer"
+                },
+                {
+                    "name": "David Dan",
+                    "email": "davidwdan@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Thruway WAMP router middleware for react/http",
+            "keywords": [
+                "Autobahn",
+                "WAMP",
+                "WAMP2",
+                "WebSockets",
+                "client",
+                "server",
+                "sockets",
+                "thruway"
+            ],
+            "time": "2019-05-15T03:38:31+00:00"
+        },
+        {
+            "name": "thruway/ratchet-transport",
+            "version": "0.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thruway/ratchet-transport.git",
+                "reference": "0f6cf96d120b264fbe229577db52be64ec58e4d0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thruway/ratchet-transport/zipball/0f6cf96d120b264fbe229577db52be64ec58e4d0",
+                "reference": "0f6cf96d120b264fbe229577db52be64ec58e4d0",
+                "shasum": ""
+            },
+            "require": {
+                "cboden/ratchet": "^0.4",
+                "guzzlehttp/psr7": "^1.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Thruway\\Transport\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matt Bonneau",
+                    "email": "matt@bonneau.net",
+                    "role": "Developer"
+                },
+                {
+                    "name": "David Dan",
+                    "email": "davidwdan@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Ratchet Transport for Thruway",
+            "keywords": [
+                "Autobahn",
+                "WAMP",
+                "WAMP2",
+                "WebSockets",
+                "client",
+                "server",
+                "sockets",
+                "thruway"
+            ],
+            "time": "2017-10-03T13:38:44+00:00"
         },
         {
             "name": "twig/twig",
@@ -6182,6 +6842,174 @@
                 "timer"
             ],
             "time": "2018-04-18T00:07:06+00:00"
+        },
+        {
+            "name": "voryx/thruway",
+            "version": "0.5.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/voryx/Thruway.git",
+                "reference": "1e75e5e8eaeb74920ac7913972968bf397c09ca3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/voryx/Thruway/zipball/1e75e5e8eaeb74920ac7913972968bf397c09ca3",
+                "reference": "1e75e5e8eaeb74920ac7913972968bf397c09ca3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6",
+                "react/event-loop": "^1.0 || ^0.5 || ^0.4.3",
+                "react/promise": "^2.3.0",
+                "symfony/event-dispatcher": "^2.7|^3.0|^4.0",
+                "thruway/client": "^0.5.0",
+                "thruway/ratchet-transport": "^0.5.0",
+                "voryx/thruway-common": "^1.0.5"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8",
+                "thruway/pawl-transport": "^0.5.0",
+                "thruway/raw-socket-transport": "^0.5.0"
+            },
+            "bin": [
+                "bin/thruway"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Thruway\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matt Bonneau",
+                    "email": "matt@bonneau.net",
+                    "role": "Developer"
+                },
+                {
+                    "name": "David Dan",
+                    "email": "davidwdan@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Thruway WAMP router core",
+            "keywords": [
+                "Autobahn",
+                "WAMP",
+                "WAMP2",
+                "WebSockets",
+                "client",
+                "server",
+                "sockets"
+            ],
+            "time": "2020-06-11T05:04:22+00:00"
+        },
+        {
+            "name": "voryx/thruway-common",
+            "version": "1.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/voryx/ThruwayCommon.git",
+                "reference": "694adb0403c4267d1ea78a136da1cafc935d39b5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/voryx/ThruwayCommon/zipball/694adb0403c4267d1ea78a136da1cafc935d39b5",
+                "reference": "694adb0403c4267d1ea78a136da1cafc935d39b5",
+                "shasum": ""
+            },
+            "replace": {
+                "voryx/thruway-message": "1.*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.5.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Thruway\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matt Bonneau",
+                    "email": "matt@bonneau.net",
+                    "role": "Developer"
+                },
+                {
+                    "name": "David Dan",
+                    "email": "davidwdan@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "WAMP2 Common Library for Thruway",
+            "keywords": [
+                "WAMP",
+                "WAMP2",
+                "thruway",
+                "wamp-proto"
+            ],
+            "time": "2019-01-18T15:59:32+00:00"
+        },
+        {
+            "name": "voryx/websocketmiddleware",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/voryx/WebSocketMiddleware.git",
+                "reference": "db278029b53d45f1cc00c11175e905b1b2318156"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/voryx/WebSocketMiddleware/zipball/db278029b53d45f1cc00c11175e905b1b2318156",
+                "reference": "db278029b53d45f1cc00c11175e905b1b2318156",
+                "shasum": ""
+            },
+            "require": {
+                "ratchet/rfc6455": "^0.2.3",
+                "react/http": "^0.8"
+            },
+            "require-dev": {
+                "react/child-process": "^0.5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Voryx\\WebSocketMiddleware\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matt Bonneau",
+                    "email": "matt@bonneau.net",
+                    "role": "Developer"
+                },
+                {
+                    "name": "David Dan",
+                    "email": "davidwdan@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "WebSocket Middleware for React",
+            "keywords": [
+                "server",
+                "websocket",
+                "websocket server",
+                "ws"
+            ],
+            "time": "2018-12-05T19:47:58+00:00"
         },
         {
             "name": "webmozart/assert",
@@ -7129,29 +7957,28 @@
         },
         {
             "name": "wyrihaximus/react-http-middleware-resume-response-body",
-            "version": "2.0.0",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/WyriHaximus/reactphp-http-middleware-resume-response-body.git",
-                "reference": "a419c0cad6d1f1f744056b0bfa3a6175f406d8e5"
+                "reference": "d95c4b04de4e8225316f489cb189855e71b660c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WyriHaximus/reactphp-http-middleware-resume-response-body/zipball/a419c0cad6d1f1f744056b0bfa3a6175f406d8e5",
-                "reference": "a419c0cad6d1f1f744056b0bfa3a6175f406d8e5",
+                "url": "https://api.github.com/repos/WyriHaximus/reactphp-http-middleware-resume-response-body/zipball/d95c4b04de4e8225316f489cb189855e71b660c1",
+                "reference": "d95c4b04de4e8225316f489cb189855e71b660c1",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.4",
-                "psr/http-message": "^1",
-                "react/event-loop": "^1.1",
-                "react/http": "^1",
-                "react/promise": "^2.7",
-                "react/stream": "^1.1"
+                "php": "^7.2",
+                "psr/http-message": "^1.0",
+                "react/http": "^0.8.4",
+                "react/promise": "^2.7"
             },
             "require-dev": {
                 "ringcentral/psr7": "^1.2.2",
-                "wyrihaximus/async-test-utilities": "^2.2"
+                "wyrihaximus/async-test-utilities": "^1.1",
+                "wyrihaximus/cs-fixer-config": "^1.0"
             },
             "type": "library",
             "autoload": {
@@ -7170,43 +7997,204 @@
                 }
             ],
             "description": "react/http middleware that resumes response bodies if they are streaming",
-            "funding": [
-                {
-                    "url": "https://github.com/WyriHaximus",
-                    "type": "github"
-                }
-            ],
-            "time": "2020-07-27T16:46:38+00:00"
+            "time": "2019-05-04T14:48:52+00:00"
         },
         {
-            "name": "wyrihaximus/react-http-middleware-webroot-preload",
-            "version": "2.0.0",
+            "name": "wyrihaximus/react-http-middleware-rewrite",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/WyriHaximus/reactphp-http-middleware-webroot-preload.git",
-                "reference": "cd4a5778115d57b6f4ef262a54de0ec1b4cca647"
+                "url": "https://github.com/WyriHaximus/reactphp-http-middleware-rewrite.git",
+                "reference": "9c83d983aa593d53b7c534e6ea15d8bc25faf04d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WyriHaximus/reactphp-http-middleware-webroot-preload/zipball/cd4a5778115d57b6f4ef262a54de0ec1b4cca647",
-                "reference": "cd4a5778115d57b6f4ef262a54de0ec1b4cca647",
+                "url": "https://api.github.com/repos/WyriHaximus/reactphp-http-middleware-rewrite/zipball/9c83d983aa593d53b7c534e6ea15d8bc25faf04d",
+                "reference": "9c83d983aa593d53b7c534e6ea15d8bc25faf04d",
                 "shasum": ""
             },
             "require": {
-                "ancarda/psr7-string-stream": "^1.3",
-                "narrowspark/mimetypes": "^1.6",
-                "php": "^7.4",
-                "psr/http-message": "^1",
-                "psr/log": "^1.1",
-                "react/cache": "^1",
-                "react/http": "^1",
-                "react/promise": "^2.8",
-                "scriptfusion/byte-formatter": "^3.2",
-                "wyrihaximus/constants": "^1.5"
+                "php": "^7.2",
+                "psr/http-message": "^1.0",
+                "react/http": "^0.8.0"
             },
             "require-dev": {
-                "brunty/cigar": "^1.12",
-                "wyrihaximus/async-test-utilities": "^2.2"
+                "api-clients/test-utilities": "^5.1",
+                "brunty/cigar": "^1.8",
+                "psr/log": "^1.0",
+                "ringcentral/psr7": "^1.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "WyriHaximus\\React\\Http\\Middleware\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cees-Jan Kiewiet",
+                    "email": "ceesjank@gmail.com"
+                }
+            ],
+            "description": "A internal path rewrite middleware for react/http",
+            "time": "2018-11-17T21:32:39+00:00"
+        },
+        {
+            "name": "wyrihaximus/react-http-middleware-runner",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/WyriHaximus/reactphp-http-middleware-runner.git",
+                "reference": "61854520d9efc4609835ae5646524888ad254ae6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/WyriHaximus/reactphp-http-middleware-runner/zipball/61854520d9efc4609835ae5646524888ad254ae6",
+                "reference": "61854520d9efc4609835ae5646524888ad254ae6",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2",
+                "psr/http-message": "^1.0",
+                "react/http": "^0.8.0",
+                "react/promise": "^2.5"
+            },
+            "require-dev": {
+                "api-clients/test-utilities": "^5.0",
+                "ringcentral/psr7": "^1.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "WyriHaximus\\React\\Http\\Middleware\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cees-Jan Kiewiet",
+                    "email": "ceesjank@gmail.com"
+                }
+            ],
+            "description": "Middleware runner for react/http",
+            "time": "2018-07-08T11:53:17+00:00"
+        },
+        {
+            "name": "wyrihaximus/react-http-middleware-session",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/WyriHaximus/reactphp-http-middleware-session.git",
+                "reference": "86ca5d5b7cf15449e60bb0626e04eaabe9d8a231"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/WyriHaximus/reactphp-http-middleware-session/zipball/86ca5d5b7cf15449e60bb0626e04eaabe9d8a231",
+                "reference": "86ca5d5b7cf15449e60bb0626e04eaabe9d8a231",
+                "shasum": ""
+            },
+            "require": {
+                "hansott/psr7-cookies": "^2.0 || ^1.0",
+                "php": "^7.3",
+                "psr/http-message": "^1.0",
+                "react/cache": "^0.5.0 || ^0.6.0 || ^1.0.0",
+                "react/http": "^0.8.0",
+                "react/promise": "^2.7"
+            },
+            "require-dev": {
+                "wyrihaximus/async-test-utilities": "^1.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "WyriHaximus\\React\\Http\\Middleware\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cees-Jan Kiewiet",
+                    "email": "ceesjank@gmail.com"
+                }
+            ],
+            "description": "react/http middleware that takes care of session handling",
+            "time": "2019-07-12T06:11:38+00:00"
+        },
+        {
+            "name": "wyrihaximus/react-http-middleware-twig",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/WyriHaximus/reactphp-http-middleware-twig.git",
+                "reference": "87ec268897926609c8ba10621ebc5103fa628743"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/WyriHaximus/reactphp-http-middleware-twig/zipball/87ec268897926609c8ba10621ebc5103fa628743",
+                "reference": "87ec268897926609c8ba10621ebc5103fa628743",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.3",
+                "psr/http-message": "^1.0",
+                "react/http": "^0.8.0",
+                "ringcentral/psr7": "^1.2.2",
+                "twig/twig": "^2.8"
+            },
+            "require-dev": {
+                "wyrihaximus/async-test-utilities": "^1.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "WyriHaximus\\React\\Http\\Middleware\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "ReactPHP HTTP Twig Middleware",
+            "time": "2019-11-24T20:57:40+00:00"
+        },
+        {
+            "name": "wyrihaximus/react-http-middleware-webroot-preload",
+            "version": "1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/WyriHaximus/reactphp-http-middleware-webroot-preload.git",
+                "reference": "ce353ed9150dd70104ef3686847db5d95e4e3815"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/WyriHaximus/reactphp-http-middleware-webroot-preload/zipball/ce353ed9150dd70104ef3686847db5d95e4e3815",
+                "reference": "ce353ed9150dd70104ef3686847db5d95e4e3815",
+                "shasum": ""
+            },
+            "require": {
+                "narrowspark/mimetypes": "^1.1.1",
+                "php": "^7.2",
+                "psr/http-message": "^1.0",
+                "psr/log": "^1.0",
+                "react/cache": "^1.0 || ^0.6 || ^0.5.0",
+                "react/http": "^0.8.0",
+                "scriptfusion/byte-formatter": "^3.2"
+            },
+            "require-dev": {
+                "brunty/cigar": "^1.8",
+                "psr/log": "^1.0",
+                "ringcentral/psr7": "^1.2",
+                "wyrihaximus/async-test-utilities": "^1.1"
             },
             "type": "library",
             "autoload": {
@@ -7225,13 +8213,7 @@
                 }
             ],
             "description": "react/http middleware static webroot serving",
-            "funding": [
-                {
-                    "url": "https://github.com/WyriHaximus",
-                    "type": "github"
-                }
-            ],
-            "time": "2020-07-11T20:44:54+00:00"
+            "time": "2019-07-12T18:45:00+00:00"
         },
         {
             "name": "wyrihaximus/react-psr-3-stdio",
@@ -8452,68 +9434,6 @@
             "time": "2020-06-29T18:35:05+00:00"
         },
         {
-            "name": "beberlei/assert",
-            "version": "v3.2.7",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/beberlei/assert.git",
-                "reference": "d63a6943fc4fd1a2aedb65994e3548715105abcf"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/beberlei/assert/zipball/d63a6943fc4fd1a2aedb65994e3548715105abcf",
-                "reference": "d63a6943fc4fd1a2aedb65994e3548715105abcf",
-                "shasum": ""
-            },
-            "require": {
-                "ext-ctype": "*",
-                "ext-json": "*",
-                "ext-mbstring": "*",
-                "ext-simplexml": "*",
-                "php": "^7"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "*",
-                "phpstan/phpstan-shim": "*",
-                "phpunit/phpunit": ">=6.0.0 <8"
-            },
-            "suggest": {
-                "ext-intl": "Needed to allow Assertion::count(), Assertion::isCountable(), Assertion::minCount(), and Assertion::maxCount() to operate on ResourceBundles"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Assert\\": "lib/Assert"
-                },
-                "files": [
-                    "lib/Assert/functions.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-2-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Benjamin Eberlei",
-                    "email": "kontakt@beberlei.de",
-                    "role": "Lead Developer"
-                },
-                {
-                    "name": "Richard Quadling",
-                    "email": "rquadling@gmail.com",
-                    "role": "Collaborator"
-                }
-            ],
-            "description": "Thin assertion library for input validation in business models.",
-            "keywords": [
-                "assert",
-                "assertion",
-                "validation"
-            ],
-            "time": "2019-12-19T17:51:41+00:00"
-        },
-        {
             "name": "composer/ca-bundle",
             "version": "1.2.7",
             "source": {
@@ -8868,16 +9788,16 @@
         },
         {
             "name": "dealerdirect/phpcodesniffer-composer-installer",
-            "version": "v0.6.2",
+            "version": "v0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Dealerdirect/phpcodesniffer-composer-installer.git",
-                "reference": "8001af8eb107fbfcedc31a8b51e20b07d85b457a"
+                "reference": "e749410375ff6fb7a040a68878c656c2e610b132"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Dealerdirect/phpcodesniffer-composer-installer/zipball/8001af8eb107fbfcedc31a8b51e20b07d85b457a",
-                "reference": "8001af8eb107fbfcedc31a8b51e20b07d85b457a",
+                "url": "https://api.github.com/repos/Dealerdirect/phpcodesniffer-composer-installer/zipball/e749410375ff6fb7a040a68878c656c2e610b132",
+                "reference": "e749410375ff6fb7a040a68878c656c2e610b132",
                 "shasum": ""
             },
             "require": {
@@ -8930,32 +9850,37 @@
                 "stylecheck",
                 "tests"
             ],
-            "time": "2020-01-29T20:22:20+00:00"
+            "time": "2018-10-26T13:21:45+00:00"
         },
         {
             "name": "doctrine/coding-standard",
-            "version": "8.1.0",
+            "version": "7.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/coding-standard.git",
-                "reference": "637003febec655f1b27f4301b44bf2264be57434"
+                "reference": "d8a60ec4da68025c42795b714f66e277dd3e11de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/coding-standard/zipball/637003febec655f1b27f4301b44bf2264be57434",
-                "reference": "637003febec655f1b27f4301b44bf2264be57434",
+                "url": "https://api.github.com/repos/doctrine/coding-standard/zipball/d8a60ec4da68025c42795b714f66e277dd3e11de",
+                "reference": "d8a60ec4da68025c42795b714f66e277dd3e11de",
                 "shasum": ""
             },
             "require": {
-                "dealerdirect/phpcodesniffer-composer-installer": "^0.6.2 || ^0.7",
-                "php": "^7.2 || ^8.0",
-                "slevomat/coding-standard": "^6.3.9",
-                "squizlabs/php_codesniffer": "^3.5.5"
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
+                "php": "^7.2",
+                "slevomat/coding-standard": "^6.0",
+                "squizlabs/php_codesniffer": "^3.5.3"
             },
             "type": "phpcodesniffer-standard",
             "extra": {
                 "branch-alias": {
                     "dev-master": "7.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Doctrine\\Sniffs\\": "lib/Doctrine/Sniffs"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -8986,7 +9911,7 @@
                 "standard",
                 "style"
             ],
-            "time": "2020-07-05T20:35:22+00:00"
+            "time": "2019-12-11T07:59:21+00:00"
         },
         {
             "name": "ergebnis/composer-normalize",
@@ -9821,6 +10746,49 @@
             "time": "2020-06-25T15:14:51+00:00"
         },
         {
+            "name": "jakub-onderka/php-console-color",
+            "version": "v0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JakubOnderka/PHP-Console-Color.git",
+                "reference": "d5deaecff52a0d61ccb613bb3804088da0307191"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/JakubOnderka/PHP-Console-Color/zipball/d5deaecff52a0d61ccb613bb3804088da0307191",
+                "reference": "d5deaecff52a0d61ccb613bb3804088da0307191",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "jakub-onderka/php-code-style": "1.0",
+                "jakub-onderka/php-parallel-lint": "1.0",
+                "jakub-onderka/php-var-dump-check": "0.*",
+                "phpunit/phpunit": "~4.3",
+                "squizlabs/php_codesniffer": "1.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "JakubOnderka\\PhpConsoleColor\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Jakub Onderka",
+                    "email": "jakub.onderka@gmail.com"
+                }
+            ],
+            "abandoned": "php-parallel-lint/php-console-color",
+            "time": "2018-09-29T17:23:10+00:00"
+        },
+        {
             "name": "jangregor/phpstan-prophecy",
             "version": "0.6.2",
             "source": {
@@ -10174,60 +11142,6 @@
             ],
             "description": "Map nested JSON structures onto PHP classes",
             "time": "2020-04-16T18:48:43+00:00"
-        },
-        {
-            "name": "nikolaposa/version",
-            "version": "4.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nikolaposa/version.git",
-                "reference": "ab1aede3f84403432fe6935f7d6bfc09639d60b2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/nikolaposa/version/zipball/ab1aede3f84403432fe6935f7d6bfc09639d60b2",
-                "reference": "ab1aede3f84403432fe6935f7d6bfc09639d60b2",
-                "shasum": ""
-            },
-            "require": {
-                "beberlei/assert": "^3.2",
-                "php": "^7.2"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.1",
-                "phpunit/phpunit": "^8.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "4.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Version\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nikola Poša",
-                    "email": "posa.nikola@gmail.com",
-                    "homepage": "https://www.nikolaposa.in.rs"
-                }
-            ],
-            "description": "Value Object that represents a SemVer-compliant version number.",
-            "homepage": "https://github.com/nikolaposa/version",
-            "keywords": [
-                "semantic",
-                "semver",
-                "version",
-                "versioning"
-            ],
-            "time": "2019-12-29T15:07:37+00:00"
         },
         {
             "name": "nunomaduro/collision",
@@ -10647,76 +11561,28 @@
             "time": "2018-07-08T19:19:57+00:00"
         },
         {
-            "name": "php-parallel-lint/php-console-color",
-            "version": "v0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-parallel-lint/PHP-Console-Color.git",
-                "reference": "b6af326b2088f1ad3b264696c9fd590ec395b49e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-parallel-lint/PHP-Console-Color/zipball/b6af326b2088f1ad3b264696c9fd590ec395b49e",
-                "reference": "b6af326b2088f1ad3b264696c9fd590ec395b49e",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0"
-            },
-            "replace": {
-                "jakub-onderka/php-console-color": "*"
-            },
-            "require-dev": {
-                "php-parallel-lint/php-code-style": "1.0",
-                "php-parallel-lint/php-parallel-lint": "1.0",
-                "php-parallel-lint/php-var-dump-check": "0.*",
-                "phpunit/phpunit": "~4.3",
-                "squizlabs/php_codesniffer": "1.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "JakubOnderka\\PhpConsoleColor\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-2-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Jakub Onderka",
-                    "email": "jakub.onderka@gmail.com"
-                }
-            ],
-            "time": "2020-05-14T05:47:14+00:00"
-        },
-        {
             "name": "php-parallel-lint/php-console-highlighter",
-            "version": "v0.5",
+            "version": "v0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-parallel-lint/PHP-Console-Highlighter.git",
-                "reference": "21bf002f077b177f056d8cb455c5ed573adfdbb8"
+                "reference": "9f7a229a69d52506914b4bc61bfdb199d90c5547"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-parallel-lint/PHP-Console-Highlighter/zipball/21bf002f077b177f056d8cb455c5ed573adfdbb8",
-                "reference": "21bf002f077b177f056d8cb455c5ed573adfdbb8",
+                "url": "https://api.github.com/repos/php-parallel-lint/PHP-Console-Highlighter/zipball/9f7a229a69d52506914b4bc61bfdb199d90c5547",
+                "reference": "9f7a229a69d52506914b4bc61bfdb199d90c5547",
                 "shasum": ""
             },
             "require": {
                 "ext-tokenizer": "*",
-                "php": ">=5.4.0",
-                "php-parallel-lint/php-console-color": "~0.2"
-            },
-            "replace": {
-                "jakub-onderka/php-console-highlighter": "*"
+                "jakub-onderka/php-console-color": "~0.2",
+                "php": ">=5.4.0"
             },
             "require-dev": {
-                "php-parallel-lint/php-code-style": "~1.0",
-                "php-parallel-lint/php-parallel-lint": "~1.0",
-                "php-parallel-lint/php-var-dump-check": "~0.1",
+                "jakub-onderka/php-code-style": "~1.0",
+                "jakub-onderka/php-parallel-lint": "~1.0",
+                "jakub-onderka/php-var-dump-check": "~0.1",
                 "phpunit/phpunit": "~4.0",
                 "squizlabs/php_codesniffer": "~1.5"
             },
@@ -10738,7 +11604,7 @@
                 }
             ],
             "description": "Highlight PHP code in terminal",
-            "time": "2020-05-13T07:37:49+00:00"
+            "time": "2018-09-29T18:48:56+00:00"
         },
         {
             "name": "php-parallel-lint/php-parallel-lint",
@@ -11717,66 +12583,6 @@
             ],
             "description": "Psalm plugin for PHPUnit",
             "time": "2020-05-24T20:30:10+00:00"
-        },
-        {
-            "name": "roave/backward-compatibility-check",
-            "version": "5.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Roave/BackwardCompatibilityCheck.git",
-                "reference": "15611feaa64b3b9fb8dbac3425e4d605c1f35c4f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Roave/BackwardCompatibilityCheck/zipball/15611feaa64b3b9fb8dbac3425e4d605c1f35c4f",
-                "reference": "15611feaa64b3b9fb8dbac3425e4d605c1f35c4f",
-                "shasum": ""
-            },
-            "require": {
-                "composer/composer": "^1.10.7",
-                "ext-json": "*",
-                "nikolaposa/version": "^4.0.0",
-                "ocramius/package-versions": "^1.8.0",
-                "php": "^7.4.7",
-                "roave/better-reflection": "^4.6.1",
-                "symfony/console": "^5.1.2",
-                "symfony/process": "^5.1.2",
-                "thecodingmachine/safe": "^1.1.1",
-                "webmozart/assert": "^1.9.0"
-            },
-            "require-dev": {
-                "doctrine/coding-standard": "^8.0.0",
-                "infection/infection": "^0.16.3",
-                "phpunit/phpunit": "^9.2.5",
-                "roave/security-advisories": "dev-master",
-                "squizlabs/php_codesniffer": "^3.5.5",
-                "vimeo/psalm": "^3.11.6"
-            },
-            "bin": [
-                "bin/roave-backward-compatibility-check"
-            ],
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Roave\\BackwardCompatibility\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "James Titcumb",
-                    "email": "james@asgrim.com"
-                },
-                {
-                    "name": "Marco Pivetta",
-                    "email": "ocramius@gmail.com"
-                }
-            ],
-            "description": "Tool to compare two revisions of a public API to check for BC breaks",
-            "time": "2020-06-22T11:14:45+00:00"
         },
         {
             "name": "sanmai/pipeline",
@@ -13237,86 +14043,6 @@
             "time": "2020-07-14T12:35:20+00:00"
         },
         {
-            "name": "symfony/polyfill-php80",
-            "version": "v1.18.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/polyfill-php80.git",
-                "reference": "d87d5766cbf48d72388a9f6b85f280c8ad51f981"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/d87d5766cbf48d72388a9f6b85f280c8ad51f981",
-                "reference": "d87d5766cbf48d72388a9f6b85f280c8ad51f981",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.0.8"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.18-dev"
-                },
-                "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Php80\\": ""
-                },
-                "files": [
-                    "bootstrap.php"
-                ],
-                "classmap": [
-                    "Resources/stubs"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Ion Bazan",
-                    "email": "ion.bazan@gmail.com"
-                },
-                {
-                    "name": "Nicolas Grekas",
-                    "email": "p@tchwork.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony polyfill backporting some PHP 8.0+ features to lower PHP versions",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "compatibility",
-                "polyfill",
-                "portable",
-                "shim"
-            ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2020-07-14T12:35:20+00:00"
-        },
-        {
             "name": "symfony/process",
             "version": "v5.1.3",
             "source": {
@@ -13883,16 +14609,16 @@
         },
         {
             "name": "wyrihaximus/async-test-utilities",
-            "version": "2.2.0",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/WyriHaximus/php-async-test-utilities.git",
-                "reference": "3b8d14cbc19ae43650f3136a00fd36b2b183324e"
+                "reference": "753deee7209c811ba0aee66d47f3906122b0d495"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WyriHaximus/php-async-test-utilities/zipball/3b8d14cbc19ae43650f3136a00fd36b2b183324e",
-                "reference": "3b8d14cbc19ae43650f3136a00fd36b2b183324e",
+                "url": "https://api.github.com/repos/WyriHaximus/php-async-test-utilities/zipball/753deee7209c811ba0aee66d47f3906122b0d495",
+                "reference": "753deee7209c811ba0aee66d47f3906122b0d495",
                 "shasum": ""
             },
             "require": {
@@ -13901,7 +14627,8 @@
                 "phpunit/phpunit": "^9.1",
                 "react/event-loop": "^1.1",
                 "react/promise": "^2.7",
-                "wyrihaximus/test-utilities": "^2.5"
+                "wyrihaximus/coding-standard": "^1.0",
+                "wyrihaximus/test-utilities": "^2.2"
             },
             "require-dev": {
                 "wyrihaximus/iterator-or-array-to-array": "^1.1"
@@ -13929,28 +14656,28 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-07-06T00:03:17+00:00"
+            "time": "2020-04-03T18:31:35+00:00"
         },
         {
             "name": "wyrihaximus/coding-standard",
-            "version": "2.0.1",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/WyriHaximus/php-coding-standard.git",
-                "reference": "42644630c536b869c74ccb3021782b7ea3282c59"
+                "reference": "ff81979383c17c34aaf2ceaf92c8c6098d82e1ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WyriHaximus/php-coding-standard/zipball/42644630c536b869c74ccb3021782b7ea3282c59",
-                "reference": "42644630c536b869c74ccb3021782b7ea3282c59",
+                "url": "https://api.github.com/repos/WyriHaximus/php-coding-standard/zipball/ff81979383c17c34aaf2ceaf92c8c6098d82e1ff",
+                "reference": "ff81979383c17c34aaf2ceaf92c8c6098d82e1ff",
                 "shasum": ""
             },
             "require": {
-                "dealerdirect/phpcodesniffer-composer-installer": "^0.6.2",
-                "doctrine/coding-standard": "^8.0",
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
+                "doctrine/coding-standard": "^7.0",
                 "php": "^7.4",
-                "slevomat/coding-standard": "^6.3",
-                "squizlabs/php_codesniffer": "^3.5"
+                "slevomat/coding-standard": "^6.0",
+                "squizlabs/php_codesniffer": "^3.4.2"
             },
             "type": "phpcodesniffer-standard",
             "notification-url": "https://packagist.org/downloads/",
@@ -13958,7 +14685,7 @@
                 "MIT"
             ],
             "description": "WyriHaximus Coding Standard",
-            "time": "2020-06-22T17:10:41+00:00"
+            "time": "2020-02-16T22:48:09+00:00"
         },
         {
             "name": "wyrihaximus/phpstan-rules-wrapper",
@@ -14001,16 +14728,16 @@
         },
         {
             "name": "wyrihaximus/test-utilities",
-            "version": "2.5.0",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/WyriHaximus/php-test-utilities.git",
-                "reference": "3ca070f048f76dbae1c7bc57277b0da6fc231e3b"
+                "reference": "13e2292d64c554875e972d717f519476b678554a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WyriHaximus/php-test-utilities/zipball/3ca070f048f76dbae1c7bc57277b0da6fc231e3b",
-                "reference": "3ca070f048f76dbae1c7bc57277b0da6fc231e3b",
+                "url": "https://api.github.com/repos/WyriHaximus/php-test-utilities/zipball/13e2292d64c554875e972d717f519476b678554a",
+                "reference": "13e2292d64c554875e972d717f519476b678554a",
                 "shasum": ""
             },
             "require": {
@@ -14021,18 +14748,17 @@
                 "maglnet/composer-require-checker": "^2.0",
                 "nunomaduro/collision": "^4.0 || ^3.0",
                 "php": "^7.4",
-                "php-parallel-lint/php-console-highlighter": "^0.4.0 || ^0.5",
+                "php-parallel-lint/php-console-highlighter": "^0.4.0",
                 "php-parallel-lint/php-parallel-lint": "^1.1",
                 "phpspec/prophecy": "^1.10",
                 "phpspec/prophecy-phpunit": "^2.0",
                 "phpstan/phpstan": "^0.12.14",
                 "phpunit/phpunit": "^9.1",
                 "psalm/plugin-phpunit": "^0.9 || ^0.10",
-                "roave/backward-compatibility-check": "^5.0",
                 "squizlabs/php_codesniffer": "^3.4.2",
                 "thecodingmachine/safe": "^1.0",
                 "vimeo/psalm": "^3.4",
-                "wyrihaximus/coding-standard": "^2.0.1",
+                "wyrihaximus/coding-standard": "^1.0",
                 "wyrihaximus/phpstan-rules-wrapper": "^1.2"
             },
             "type": "library",
@@ -14050,7 +14776,6 @@
                     "phpstan/phpstan",
                     "phpunit/phpunit",
                     "psalm/plugin-phpunit",
-                    "roave/backward-compatibility-check",
                     "slevomat/coding-standard",
                     "vimeo/psalm",
                     "wyrihaximus/phpstan-rules-wrapper"
@@ -14078,7 +14803,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-06-23T17:04:48+00:00"
+            "time": "2020-04-20T09:34:28+00:00"
         }
     ],
     "aliases": [],
@@ -14089,7 +14814,6 @@
         "mammatus/http-server-contracts": 20,
         "mammatus/http-server-webroot": 20,
         "mammatus/life-cycle-events": 20,
-        "mammatus/metrics-prometheus": 20,
         "php-di-definitions/react-event-loop-inspected": 20,
         "react-parallel/logger": 20,
         "react-parallel/psr-15-adapter": 20,
@@ -14107,7 +14831,7 @@
     },
     "platform-dev": [],
     "platform-overrides": {
-        "php": "7.4.7"
+        "php": "7.4"
     },
     "plugin-api-version": "1.1.0"
 }
