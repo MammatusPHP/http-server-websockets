@@ -3,50 +3,10 @@
 // phpcs:disable
 namespace Mammatus\Http\Server\Generated;
 
-use Ancarda\Psr7\StringStream\ReadOnlyStringStream;
-use Chimera\ExecuteQuery;
-use Chimera\MessageCreator\NamedConstructor;
-use Chimera\Routing\Expressive\RouteParamsExtractor;
-use Chimera\Routing\RouteParamsExtraction;
-use Chimera\ServiceBus\Tactician\ServiceBus;
-use Laminas\Diactoros\ResponseFactory;
-use Laminas\Diactoros\StreamFactory;
-use Lcobucci\ContentNegotiation\ContentTypeMiddleware;
-use Lcobucci\ContentNegotiation\Formatter\Json;
-use Lcobucci\ContentNegotiation\Formatter\StringCast;
-use League\Tactician\CommandBus;
-use League\Tactician\Container\ContainerLocator;
-use League\Tactician\Handler\CommandHandlerMiddleware;
-use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
-use League\Tactician\Handler\Locator\InMemoryLocator;
-use League\Tactician\Handler\MethodNameInflector\HandleInflector;
-use Mammatus\Http\Server\CommandBus\ChannelStreamFactorySubscriber;
-use Mammatus\Http\Server\CommandBus\CommandHandlerMiddlewareProxy;
 use Mammatus\Http\Server\Middleware\UnformattedContent;
 use Mammatus\Http\Server\Web\Server;
-use Mezzio\Helper\ServerUrlHelper;
-use Mezzio\Helper\ServerUrlMiddleware;
-use Mezzio\Helper\UrlHelper;
-use Mezzio\Helper\UrlHelperMiddleware;
-use Mezzio\Router\Middleware\DispatchMiddleware;
-use Mezzio\Router\Middleware\ImplicitHeadMiddleware;
-use Mezzio\Router\Middleware\ImplicitOptionsMiddleware;
-use Mezzio\Router\Middleware\MethodNotAllowedMiddleware;
-use Mezzio\Router\Middleware\RouteMiddleware;
-use Mezzio\Router\RouteCollector;
-use Middlewares\AccessLog;
-use Middlewares\ClientIp;
-use Middlewares\ContentType;
-use Middlewares\Expires;
-use Middlewares\ResponseTime;
-use Middlewares\Uuid;
-use parallel\Channel;
-use parallel\Events;
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\StreamInterface;
 use Psr\Log\LoggerInterface;
 use React\EventLoop\LoopInterface;
 use React\Http\Middleware\LimitConcurrentRequestsMiddleware;
@@ -56,14 +16,10 @@ use ReactInspector\HttpMiddleware\MiddlewareCollector;
 use ReactParallel\EventLoop\EventLoopBridge;
 use ReactParallel\Logger\Logger;
 use ReactParallel\Pool\Infinite\Infinite;
-use ReactParallel\Psr15Adapter\ReactMiddleware;
-use ReactParallel\Streams\Factory;
+use ReactParallel\Pool\Worker\Worker as WorkerPool;
 use ReactParallel\Streams\RecvObservable;
 use ReactParallel\Streams\SingleRecv;
-use RingCentral\Psr7\Response;
 use WyriHaximus\PSR3\CallableThrowableLogger\CallableThrowableLogger;
-use Zend\Expressive\Router\FastRouteRouter;
-use Zend\Stratigility\Middleware\RequestHandlerMiddleware;
 use function React\Promise\resolve;
 use function WyriHaximus\iteratorOrArrayToArray;
 
@@ -79,63 +35,16 @@ abstract class AbstractConfiguration
 
     final protected function initialize(LoopInterface $loop, LoggerInterface $logger, ContainerInterface $container)
     {
-        $channelLogger = $container->get(Logger::class);
-        $expires = require \Composed\package('middlewares/cache')->getPath('src/expires_defaults.php');
-        $clientIpMiddleware = new ClientIp();
-        $uuidMiddleware = new Uuid();
-        $accessLogMiddleware = (new AccessLog($channelLogger))->format('[%{vhost}] %a %l %u %Dms "%r" %>s %b "%{Referer}i" "%{User-Agent}i"')->
-            ipAttribute('client-ip')->
-            context(function (ServerRequestInterface $request, ResponseInterface $response) {
-                return [
-                    'vhost' => $request->getAttribute('vhost'),
-                    'client-ip' => $request->getAttribute('client-ip'),
-                    'request-id' => $request->getHeaderLine('X-Uuid'),
-                    'request-method' => $request->getMethod(),
-                    'request-protocol-version' => $request->getProtocolVersion(),
-                    'response-protocol-version' => $response->getProtocolVersion(),
-                    'response-status-code' => $response->getStatusCode(),
-                    'response-time' => $response->getHeaderLine('X-Response-Time'),
-                    'response-time-float' => \substr($response->getHeaderLine('X-Response-Time'), 0, -2),
-                    'response-time-float-single-digit' => \round((float)\substr($response->getHeaderLine('X-Response-Time'), 0, -2), 1),
-                    'response-time-int' => (int)\round((float)\substr($response->getHeaderLine('X-Response-Time'), 0, -2), 0),
-                ];
-            });
-        $responseTimeMiddleware = new ResponseTime();
-        $expiresMiddleware = new Expires($expires);
         $threadPool = new Infinite($loop, $container->get(EventLoopBridge::class), 13);
-        $channelStreamFactory = $container->get(Factory::class);
-        $namedConstructor = $container->get(NamedConstructor::class);
-        $responseFactory = new ResponseFactory();//$container->get(ResponseFactoryInterface::class)
-        $responseFactoryCallable = static function () use ($responseFactory): ResponseFactoryInterface {
-            return $responseFactory;
-        };
-        $streamFactory = new StreamFactory();
-        $streamFactoryCallable = static function () use ($streamFactory): StreamInterface {
-            return $streamFactory->createStream();
-        };
-
+        $channelLogger = $container->get(Logger::class);
         {% for server in servers %}
-        $router_{{ server.vhost().name() }} = new FastRouteRouter();
-        $routeCollector_{{ server.vhost().name() }} = new RouteCollector($router_{{ server.vhost().name() }});
-        {% for bus in server.busses() %}
-        $tactician_command_handler_middleware_{{ server.vhost().name() }}_{{ bus.name() }} = new CommandHandlerMiddleware(
-            new ClassNameExtractor(),
-            new InMemoryLocator(
-                [
-                    {% for handler in bus.handlers() %}
-                    \{{ handler.command() }}::class => new \{{ handler.commandHandler() }}(),
-        {#\{{ handler.command() }}::class => \{{ handler.commandHandler() }}::class,#}
-                    {% endfor %}
-                ]
-            ),
-            new HandleInflector()
+        $workerPool_{{ server.vhost().name() }}    = new WorkerPool(
+            $loop,
+            $container->get(EventLoopBridge::class),
+            $threadPool,
+            new WorkerFactory_{{ server.vhost().name() }}($channelLogger),
+            (int) '13'
         );
-
-        $serviceBus_{{ server.vhost().name() }}_{{ bus.name() }} = new ServiceBus(new CommandBus([$tactician_command_handler_middleware_{{ server.vhost().name() }}_{{ bus.name() }}]));
-        {% for handler in bus.handlers() %}
-        $routeCollector_{{ server.vhost().name() }}->route('{{ handler.path() }}', new RequestHandlerMiddleware(new \{{ handler.handler() }}(new ExecuteQuery($serviceBus_{{ server.vhost().name() }}_{{ bus.name() }}, $namedConstructor, \{{ handler.command() }}::class), $responseFactory)), ['{{ handler.methods()|join("', '") }}']);
-        {% endfor %}
-        {% endfor %}
         $http_server_{{ server.vhost().name() }} = new HttpServer($loop, ...array_merge(
                 iteratorOrArrayToArray($this->middleware()),
                 [
@@ -152,58 +61,9 @@ abstract class AbstractConfiguration
                     )
                     {% endif %}
                     new UnformattedContent(),
-                    new ReactMiddleware(
-                        $loop,
-                        $container->get(EventLoopBridge::class),
-                        $channelStreamFactory,
-                        $threadPool,
-                        $clientIpMiddleware,
-                        $uuidMiddleware,
-                        $accessLogMiddleware,
-                        $responseTimeMiddleware,
-                        $expiresMiddleware,
-                        new ServerUrlMiddleware($container->get(ServerUrlHelper::class)),
-                        new ContentTypeMiddleware(
-                            new ContentType([
-                                'json' => [
-                                    'extension' => ['json'],
-                                    'mime-type' => ['application/json'],
-                                    'charset' => true,
-                                ],
-                                'html' => [
-                                    'extension' => ['html', 'htm'],
-                                    'mime-type' => ['text/html', 'application/xhtml+xml'],
-                                    'charset' => true,
-                                ],
-                                'plain' => [
-                                    'extension' => [],
-                                    'mime-type' => ['text/plain'],
-                                    'charset' => true,
-                                ],
-                            ]),
-                            [
-                                'application/json' => new Json(),
-                                'text/html'        => new StringCast(),
-                                'text/plain'        => new StringCast(),
-                            ],
-                            $streamFactory,
-                        ),
-                        new RouteMiddleware($router_{{ server.vhost().name() }}),
-                        new RouteParamsExtraction($container->get(RouteParamsExtractor::class)),
-                        new ImplicitHeadMiddleware($router_{{ server.vhost().name() }}, $streamFactoryCallable),
-                        new ImplicitOptionsMiddleware($responseFactoryCallable),
-                        new MethodNotAllowedMiddleware($responseFactoryCallable),
-                        new UrlHelperMiddleware(new UrlHelper($router_{{ server.vhost().name() }})),
-                        new DispatchMiddleware()
-                    ),
-                    static function (): ResponseInterface {
-                        return new Response(
-                            404,
-                            [
-                                'Content-Type' => 'text/plain',
-                            ],
-                            new ReadOnlyStringStream('Couldn\'t find what you\'re looking for')
-                        );
+                    static function(ServerRequestInterface $request) use ($workerPool_{{ server.vhost().name() }}): PromiseInterface
+                    {
+                        return $workerPool_{{ server.vhost().name() }}->perform(new \Mammatus\Http\Server\Middleware\Work(new \Mammatus\Http\Server\Middleware\Request($request)));
                     }
                 ]
             )

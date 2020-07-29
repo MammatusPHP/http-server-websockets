@@ -32,12 +32,12 @@
         "middlewares/uuid": "^1.0",
         "nikic/fast-route": "^1.2",
         "nikic/php-parser": "4.6.0",
+        "northwoods/broker": "^3.0",
         "opis/closure": "^3.5",
         "php-di-definitions/react-event-loop-inspected": "dev-master",
         "react-inspector/http-middleware": "^1.0",
         "react-parallel/event-loop": "^1.0",
         "react-parallel/logger": "dev-master",
-        "react-parallel/psr-15-adapter": "dev-master",
         "react-parallel/streams": "dev-master",
         "react-parallel/worker-pool": "dev-master",
         "react/http": "^1.0",
@@ -105,12 +105,6 @@
             "Mammatus\\Tests\\Http\\Server\\": "tests/"
         }
     },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "psr-15-adapter-master"
-        }
-    ],
     "scripts": {
         "post-install-cmd": [
             "composer normalize"

@@ -137,6 +137,34 @@ final class Installer implements PluginInterface, EventSubscriberInterface
         file_put_contents($installPath, $classContents);
         chmod($installPath, 0664);
 
+        /** @var Server $vhost */
+        foreach ($vhosts as $vhost) {
+            $classContents = render(
+                file_get_contents(
+                    self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage()) . '/etc/Worker_.php.twig'
+                ),
+                ['server' => $vhost]
+            );
+
+            $installPath = self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage())
+                . '/src/Generated/Worker_' . $vhost->vhost()->name() . '.php';
+
+            file_put_contents($installPath, $classContents);
+            chmod($installPath, 0664);
+            $classContents = render(
+                file_get_contents(
+                    self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage()) . '/etc/WorkerFactory_.php.twig'
+                ),
+                ['server' => $vhost]
+            );
+
+            $installPath = self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage())
+                . '/src/Generated/WorkerFactory_' . $vhost->vhost()->name() . '.php';
+
+            file_put_contents($installPath, $classContents);
+            chmod($installPath, 0664);
+        }
+
         $io->write(sprintf(
             '<info>mammatus/http-server:</info> Generated static abstract vhost(s) configuration in %s second(s)',
             round(microtime(true) - $start, 2)
@@ -159,7 +187,7 @@ final class Installer implements PluginInterface, EventSubscriberInterface
     }
 
     /**
-     * @return array<string, array<array{class: string, method: string, static: bool}>>
+     * @return array<Server>
      */
     private static function findAllVhosts(Composer $composer, IOInterface $io): array
     {
