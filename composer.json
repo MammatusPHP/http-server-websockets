@@ -37,6 +37,7 @@
         "php-di-definitions/react-event-loop-inspected": "dev-master",
         "react-inspector/http-middleware": "^1.0",
         "react-parallel/event-loop": "^1.0",
+        "react-parallel/infinite-pool": "^2.0",
         "react-parallel/logger": "dev-master",
         "react-parallel/streams": "dev-master",
         "react-parallel/worker-pool": "dev-master",

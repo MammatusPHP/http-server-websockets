@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ac72a24395d5e5b9ec7591bde5758c8f",
+    "content-hash": "12b7f1f9f2024741fcc9adfd702ce8ae",
     "packages": [
         {
             "name": "ancarda/psr7-string-stream",
@@ -4285,6 +4285,66 @@
             "time": "2020-07-07T16:41:12+00:00"
         },
         {
+            "name": "react-parallel/infinite-pool",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/reactphp-parallel/infinite-pool.git",
+                "reference": "a7efc85bafb88977eea4f316c4cbc5c6ef612ae7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/reactphp-parallel/infinite-pool/zipball/a7efc85bafb88977eea4f316c4cbc5c6ef612ae7",
+                "reference": "a7efc85bafb88977eea4f316c4cbc5c6ef612ae7",
+                "shasum": ""
+            },
+            "require": {
+                "ext-parallel": "*",
+                "php": "^7.4",
+                "react-parallel/contracts": "^1.0",
+                "react-parallel/event-loop": "^1.0",
+                "react-parallel/runtime": "^2.0",
+                "react/event-loop": "^1.1",
+                "react/promise": "^2.7",
+                "wyrihaximus/constants": "^1.4",
+                "wyrihaximus/pool-info": "^1.0",
+                "wyrihaximus/ticking-promise": "^1.6"
+            },
+            "require-dev": {
+                "bruli/php-value-objects": "^2.0",
+                "moneyphp/money": "^3.2 || ^3.2.1",
+                "ocramius/package-versions": "^1.4",
+                "react-parallel/pool-tests": "^2.0",
+                "wyrihaximus/async-test-utilities": "^2.2",
+                "wyrihaximus/iterator-or-array-to-array": "^1.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ReactParallel\\Pool\\Infinite\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cees-Jan Kiewiet",
+                    "email": "ceesjank@gmail.com",
+                    "homepage": "http://wyrihaximus.net/"
+                }
+            ],
+            "description": "♾️ Infinite pool for bridging ext-parallel and ReactPHP",
+            "funding": [
+                {
+                    "url": "https://github.com/WyriHaximus",
+                    "type": "github"
+                }
+            ],
+            "time": "2020-07-06T19:18:05+00:00"
+        },
+        {
             "name": "react-parallel/logger",
             "version": "dev-master",
             "source": {
@@ -4333,6 +4393,58 @@
                 }
             ],
             "time": "2020-07-24T13:26:32+00:00"
+        },
+        {
+            "name": "react-parallel/runtime",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/reactphp-parallel/runtime.git",
+                "reference": "5c8ece636cf2cc3187f570c9db02a93d0a858ce3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/reactphp-parallel/runtime/zipball/5c8ece636cf2cc3187f570c9db02a93d0a858ce3",
+                "reference": "5c8ece636cf2cc3187f570c9db02a93d0a858ce3",
+                "shasum": ""
+            },
+            "require": {
+                "ext-parallel": "*",
+                "php": "^7.4",
+                "react-parallel/event-loop": "^1.0",
+                "react/event-loop": "^1.1",
+                "react/promise": "^2.7",
+                "wyrihaximus/constants": "^1.4.3"
+            },
+            "require-dev": {
+                "wyrihaximus/async-test-utilities": "^2.2",
+                "wyrihaximus/ticking-promise": "^1.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ReactParallel\\Runtime\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cees-Jan Kiewiet",
+                    "email": "ceesjank@gmail.com",
+                    "homepage": "http://wyrihaximus.net/"
+                }
+            ],
+            "description": "💨 Convinence wrapper around ext-parallel Runtime for and ReactPHP",
+            "funding": [
+                {
+                    "url": "https://github.com/WyriHaximus",
+                    "type": "github"
+                }
+            ],
+            "time": "2020-07-06T11:17:51+00:00"
         },
         {
             "name": "react-parallel/streams",
