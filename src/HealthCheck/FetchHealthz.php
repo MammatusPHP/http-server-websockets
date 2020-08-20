@@ -6,9 +6,9 @@ namespace Mammatus\Http\Server\HealthCheck;
 
 use Chimera\Input;
 
-final class FetchHealtz
+final class FetchHealthz
 {
-    public static function fromInput(Input $input): FetchHealtz
+    public static function fromInput(Input $input): FetchHealthz
     {
         return new self();
     }

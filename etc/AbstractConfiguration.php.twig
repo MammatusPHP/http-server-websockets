@@ -8,18 +8,25 @@ use Mammatus\Http\Server\Web\Server;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
+use React\Cache\ArrayCache;
 use React\EventLoop\LoopInterface;
 use React\Http\Middleware\LimitConcurrentRequestsMiddleware;
+use React\Http\Middleware\RequestBodyBufferMiddleware;
+use React\Http\Middleware\StreamingRequestMiddleware;
 use React\Http\Server as HttpServer;
 use React\Promise\PromiseInterface;
 use ReactInspector\HttpMiddleware\MiddlewareCollector;
 use ReactParallel\EventLoop\EventLoopBridge;
+use ReactParallel\Factory;
 use ReactParallel\Logger\Logger;
 use ReactParallel\Pool\Infinite\Infinite;
 use ReactParallel\Pool\Worker\Worker as WorkerPool;
 use ReactParallel\Streams\RecvObservable;
 use ReactParallel\Streams\SingleRecv;
+use Thruway\Middleware;
 use WyriHaximus\PSR3\CallableThrowableLogger\CallableThrowableLogger;
+use WyriHaximus\PSR3\ContextLogger\ContextLogger;
+use WyriHaximus\React\Http\Middleware\WebrootPreloadMiddleware;
 use function React\Promise\resolve;
 use function WyriHaximus\iteratorOrArrayToArray;
 
@@ -35,13 +42,12 @@ abstract class AbstractConfiguration
 
     final protected function initialize(LoopInterface $loop, LoggerInterface $logger, ContainerInterface $container)
     {
-        $threadPool = new Infinite($loop, $container->get(EventLoopBridge::class), 13);
+        \Thruway\Logging\Logger::set($logger);
+        $rpFactory = $container->get(Factory::class);
         $channelLogger = $container->get(Logger::class);
         {% for server in servers %}
         $workerPool_{{ server.vhost().name() }}    = new WorkerPool(
-            $loop,
-            $container->get(EventLoopBridge::class),
-            $threadPool,
+            $rpFactory,
             new WorkerFactory_{{ server.vhost().name() }}($channelLogger),
             (int) '13'
         );
@@ -49,22 +55,22 @@ abstract class AbstractConfiguration
                 iteratorOrArrayToArray($this->middleware()),
                 [
                     new LimitConcurrentRequestsMiddleware(PHP_INT_MAX),
+                    new StreamingRequestMiddleware(),
                     new MiddlewareCollector('{{ server.vhost().name() }}'),
-                    static function (ServerRequestInterface $request, callable $next): PromiseInterface {
-                        return resolve($next($request->withAttribute('vhost', '{{ server.vhost().name() }}')));
-                    },
+                    {% if server.realms()|length > 0 %}
+                        new Middleware(['/', '/ws/'], $loop, $container->get(RouterFactory_{{ server.vhost().name() }}::class)->router()),
+                    {% endif %}
+                    new RequestBodyBufferMiddleware(65536),
+                    static fn (ServerRequestInterface $request, callable $next): PromiseInterface => resolve($next($request->withAttribute('vhost', '{{ server.vhost().name() }}'))),
                     {% if server.hasWebroot() %}
                     new WebrootPreloadMiddleware(
                         '{{ server.webroot() }}',
                         new ContextLogger($logger, ['section' => 'webroot'], 'webroot'),
                         new ArrayCache(), // TODO: Add support for other cache storages
-                    )
+                    ),
                     {% endif %}
                     new UnformattedContent(),
-                    static function(ServerRequestInterface $request) use ($workerPool_{{ server.vhost().name() }}): PromiseInterface
-                    {
-                        return $workerPool_{{ server.vhost().name() }}->perform(new \Mammatus\Http\Server\Middleware\Work(new \Mammatus\Http\Server\Middleware\Request($request)));
-                    }
+                    static fn(ServerRequestInterface $request): PromiseInterface => $workerPool_{{ server.vhost().name() }}->perform(new \Mammatus\Http\Server\Middleware\Work(new \Mammatus\Http\Server\Middleware\Request($request))),
                 ]
             )
         );

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Mammatus\Http\Server\Middleware;
 
-use ReactParallel\Pool\Worker\Work as WorkContract;
+use ReactParallel\Pool\Worker\Work\Work as WorkContract;
 
 final class Work implements WorkContract
 {

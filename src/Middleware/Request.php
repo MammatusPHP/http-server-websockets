@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Mammatus\Http\Server\Middleware;
 
-use parallel\Channel;
 use Psr\Http\Message\ServerRequestInterface;
 
 final class Request

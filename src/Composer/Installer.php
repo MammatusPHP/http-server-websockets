@@ -18,10 +18,16 @@ use Composer\Script\ScriptEvents;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Mammatus\Http\Server\Annotations\Bus as BusAnnotation;
 use Mammatus\Http\Server\Annotations\Vhost as VhostAnnotation;
+use Mammatus\Http\Server\Annotations\WebSocket\Realm as RealmAnnotation;
+use Mammatus\Http\Server\Annotations\WebSocket\Rpc as RpcAnnotation;
+use Mammatus\Http\Server\Annotations\WebSocket\Subscription as SubscriptionAnnotation;
 use Mammatus\Http\Server\Configuration\Bus;
 use Mammatus\Http\Server\Configuration\Handler;
 use Mammatus\Http\Server\Configuration\Server;
 use Mammatus\Http\Server\Configuration\Vhost;
+use Mammatus\Http\Server\Configuration\WebSocket\Handler as WebSocketHandler;
+use Mammatus\Http\Server\Configuration\WebSocket\Realm;
+use Mammatus\Http\Server\Configuration\WebSocket\Rpc;
 use React\EventLoop\StreamSelectLoop;
 use Roave\BetterReflection\BetterReflection;
 use Roave\BetterReflection\Reflection\ReflectionClass;
@@ -77,7 +83,7 @@ final class Installer implements PluginInterface, EventSubscriberInterface
      */
     public static function getSubscribedEvents(): array
     {
-        return [ScriptEvents::PRE_AUTOLOAD_DUMP => 'findVhosts'];
+        return [ScriptEvents::PRE_AUTOLOAD_DUMP => ['findVhosts', -666]];
     }
 
     public function activate(Composer $composer, IOInterface $io): void
@@ -145,24 +151,45 @@ final class Installer implements PluginInterface, EventSubscriberInterface
                 ),
                 ['server' => $vhost]
             );
-
             $installPath = self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage())
                 . '/src/Generated/Worker_' . $vhost->vhost()->name() . '.php';
-
             file_put_contents($installPath, $classContents);
             chmod($installPath, 0664);
+
             $classContents = render(
                 file_get_contents(
                     self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage()) . '/etc/WorkerFactory_.php.twig'
                 ),
                 ['server' => $vhost]
             );
-
             $installPath = self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage())
                 . '/src/Generated/WorkerFactory_' . $vhost->vhost()->name() . '.php';
-
             file_put_contents($installPath, $classContents);
             chmod($installPath, 0664);
+
+            $classContents = render(
+                file_get_contents(
+                    self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage()) . '/etc/RouterFactory_.php.twig'
+                ),
+                ['server' => $vhost]
+            );
+            $installPath = self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage())
+                . '/src/Generated/RouterFactory_' . $vhost->vhost()->name() . '.php';
+            file_put_contents($installPath, $classContents);
+            chmod($installPath, 0664);
+
+            foreach ($vhost->busses() as $bus) {
+                $classContents = render(
+                    file_get_contents(
+                        self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage()) . '/etc/CommandHandlerMiddlewareFactory_.php.twig'
+                    ),
+                    ['server' => $vhost, 'bus' => $bus]
+                );
+                $installPath = self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage())
+                    . '/src/Generated/CommandHandlerMiddlewareFactory_' . $vhost->vhost()->name() . '_' . $bus->name() . '.php';
+                file_put_contents($installPath, $classContents);
+                chmod($installPath, 0664);
+            }
         }
 
         $io->write(sprintf(
@@ -222,6 +249,79 @@ final class Installer implements PluginInterface, EventSubscriberInterface
                 assert($vhost instanceof Vhost);
                 $vhosts[] = new Server(
                     $vhost,
+                    await(
+                        $classes()->flatMap(static function (ReflectionClass $class) use ($annotationReader): Observable {
+                            $annotations = [];
+                            foreach ($annotationReader->getClassAnnotations(new \ReflectionClass($class->getName())) as $annotation) {
+                                $annotations[get_class($annotation)] = $annotation;
+                            }
+
+                            return observableFromArray([
+                                [
+                                    'class' => $class->getName(),
+                                    'annotations' => $annotations,
+                                ],
+                            ]);
+                        })->filter(static function (array $classNAnnotations): bool {
+                            if (! array_key_exists(VhostAnnotation::class, $classNAnnotations['annotations'])) {
+                                return false;
+                            }
+
+                            if (! array_key_exists(BusAnnotation::class, $classNAnnotations['annotations'])) {
+                                return false;
+                            }
+
+                            if (! array_key_exists(RealmAnnotation::class, $classNAnnotations['annotations'])) {
+                                return false;
+                            }
+
+                            if (! array_key_exists(RpcAnnotation::class, $classNAnnotations['annotations']) && ! array_key_exists(SubscriptionAnnotation::class, $classNAnnotations['annotations'])) {
+                                return false;
+                            }
+
+                            foreach ($classNAnnotations['annotations'] as $annotation) {
+                                if (is_subclass_of($annotation, Routing\Endpoint::class)) {
+                                    return true;
+                                }
+                            }
+
+                            return false;
+                        })->filter(static function (array $classNAnnotations) use ($vhost): bool {
+                            return $classNAnnotations['annotations'][VhostAnnotation::class]->vhost() === $vhost->name();
+                        })->toArray()->toPromise()->then(static function (array $handlers) {
+                            $realms = [];
+                            foreach ($handlers as $handler) {
+                                $realms[$handler['annotations'][RealmAnnotation::class]->realm()][$handler['annotations'][BusAnnotation::class]->bus()][] = $handler;
+                            }
+
+                            $realmInstances = [];
+                            foreach ($realms as $name => $busses) {
+                                $realmRpcs = [];
+                                $realmSubscriptions = [];
+                                foreach ($busses as $bus => $handlers) {
+                                    foreach ($handlers as $handler) {
+                                        if (array_key_exists(RpcAnnotation::class, $handler['annotations'])) {
+                                            $realmRpcs[] = new Rpc(
+                                                $handler['annotations'][RpcAnnotation::class]->rpc(),
+                                                $handler['annotations'][RpcAnnotation::class]->command(),
+                                                $bus,
+                                            );
+                                        }
+                                    }
+                                }
+                                $realmInstances[] = new Realm(
+                                    $name,
+                                    $realmRpcs,
+                                    $realmSubscriptions,
+                                    array_keys($busses),
+                                );
+                            }
+
+                            return $realmInstances;
+                        }),
+                        new StreamSelectLoop(),
+                        1
+                    ),
                     ...await(
                         $classes()->flatMap(static function (ReflectionClass $class) use ($annotationReader): Observable {
                             $annotations = [];
