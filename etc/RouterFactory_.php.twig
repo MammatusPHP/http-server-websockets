@@ -5,6 +5,7 @@ namespace Mammatus\Http\Server\Generated;
 
 use Chimera\ServiceBus\Tactician\ServiceBus;
 use League\Tactician\CommandBus;
+use Mammatus\Http\Server\WebSockets\Broadcaster;
 use Mammatus\Http\Server\WebSockets\ResponseTransformerMiddleware;
 use Mammatus\Http\Server\WebSockets\RpcInput;
 use Mammatus\LifeCycleEvents\Initialize;
@@ -50,21 +51,27 @@ final class RouterFactory_{{ server.vhost().name() }} implements Listener
         {% endfor %}
 
         {% for realm in server.realms() %}
-        $internalClient = new Client('{{ realm.name() }}', $this->loop);
-        $internalClient->on('open', function (ClientSession $session) use ($busses): void {
+        $internalClient_{{ realm.name() }} = new Client('{{ realm.name() }}', $this->loop);
+        $internalClient_{{ realm.name() }}->on('open', function (ClientSession $session) use ($busses): void {
             {% for rpc in realm.rpcs() %}
             $session->register('{{ rpc.name() }}', static fn (array $args): PromiseInterface => $busses['{{ server.vhost().name() }}']['{{ rpc.bus() }}']->handle(\{{ rpc.command() }}::fromInput(new RpcInput($args))));
             $this->logger->debug('Registered RPC "{{ rpc.name() }}" on realm "{{ realm.name() }}"');
             {% endfor %}
+            {% if realm.broadcasts()|length > 0 %}
+            $broadcaster_{{ realm.name() }} = new Broadcaster($session);
+            {% endif %}
+            {% for broadcast in realm.broadcasts() %}
+            $this->container->get(\{{ broadcast.class() }}::class)->broadcast($broadcaster_{{ realm.name() }});
+            {% endfor %}
         });
-        $internalClient->on('close', function (ClientSession $session): void {
+        $internalClient_{{ realm.name() }}->on('close', function (ClientSession $session): void {
             {% for rpc in realm.rpcs() %}
             $session->unregister('{{ rpc.name() }}');
             $this->logger->debug('Unregistered RPC "{{ rpc.name() }}" on realm "{{ realm.name() }}"');
             {% endfor %}
         });
+        $this->router->addInternalClient($internalClient_{{ realm.name() }});
         {% endfor %}
-        $this->router->addInternalClient($internalClient);
     }
 
     public function router(): Router

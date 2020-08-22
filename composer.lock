@@ -645,16 +645,16 @@
         },
         {
             "name": "clue/block-react",
-            "version": "v1.3.1",
+            "version": "v1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/clue/reactphp-block.git",
-                "reference": "2f516b28259c203d67c4c963772dd7e9db652737"
+                "reference": "c8e7583ae55127b89d6915480ce295bac81c4f88"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/clue/reactphp-block/zipball/2f516b28259c203d67c4c963772dd7e9db652737",
-                "reference": "2f516b28259c203d67c4c963772dd7e9db652737",
+                "url": "https://api.github.com/repos/clue/reactphp-block/zipball/c8e7583ae55127b89d6915480ce295bac81c4f88",
+                "reference": "c8e7583ae55127b89d6915480ce295bac81c4f88",
                 "shasum": ""
             },
             "require": {
@@ -664,7 +664,8 @@
                 "react/promise-timer": "^1.5"
             },
             "require-dev": {
-                "phpunit/phpunit": "^6.4 || ^5.7 || ^4.8.35"
+                "phpunit/phpunit": "^9.3 || ^5.7 || ^4.8.35",
+                "react/http": "^1.0"
             },
             "type": "library",
             "autoload": {
@@ -679,7 +680,7 @@
             "authors": [
                 {
                     "name": "Christian Lück",
-                    "email": "christian@lueck.tv"
+                    "email": "christian@clue.engineering"
                 }
             ],
             "description": "Lightweight library that eases integrating async components built for ReactPHP in a traditional, blocking environment.",
@@ -694,7 +695,17 @@
                 "sleep",
                 "synchronous"
             ],
-            "time": "2019-04-09T11:45:04+00:00"
+            "funding": [
+                {
+                    "url": "https://clue.engineering/support",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/clue",
+                    "type": "github"
+                }
+            ],
+            "time": "2020-08-21T14:09:44+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -1890,12 +1901,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/MammatusPHP/http-server-annotations.git",
-                "reference": "6932abbc7e12a4ee9691fe204dbcf3339d9e86d8"
+                "reference": "2a6c8617164f45e0662b343c4c715c8d70458ec9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/MammatusPHP/http-server-annotations/zipball/6932abbc7e12a4ee9691fe204dbcf3339d9e86d8",
-                "reference": "6932abbc7e12a4ee9691fe204dbcf3339d9e86d8",
+                "url": "https://api.github.com/repos/MammatusPHP/http-server-annotations/zipball/2a6c8617164f45e0662b343c4c715c8d70458ec9",
+                "reference": "2a6c8617164f45e0662b343c4c715c8d70458ec9",
                 "shasum": ""
             },
             "require": {
@@ -1912,7 +1923,7 @@
                 "MIT"
             ],
             "description": "HTTP Server annotations",
-            "time": "2020-08-15T14:38:48+00:00"
+            "time": "2020-08-22T14:47:05+00:00"
         },
         {
             "name": "mammatus/http-server-contracts",
@@ -14480,16 +14491,16 @@
         },
         {
             "name": "vimeo/psalm",
-            "version": "3.14.1",
+            "version": "3.14.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vimeo/psalm.git",
-                "reference": "9822043ca46d6682b76097bfa97d7c450eef9e90"
+                "reference": "3538fe1955d47f6ee926c0769d71af6db08aa488"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vimeo/psalm/zipball/9822043ca46d6682b76097bfa97d7c450eef9e90",
-                "reference": "9822043ca46d6682b76097bfa97d7c450eef9e90",
+                "url": "https://api.github.com/repos/vimeo/psalm/zipball/3538fe1955d47f6ee926c0769d71af6db08aa488",
+                "reference": "3538fe1955d47f6ee926c0769d71af6db08aa488",
                 "shasum": ""
             },
             "require": {
@@ -14573,7 +14584,7 @@
                 "inspection",
                 "php"
             ],
-            "time": "2020-08-17T19:48:48+00:00"
+            "time": "2020-08-22T14:01:26+00:00"
         },
         {
             "name": "webmozart/glob",

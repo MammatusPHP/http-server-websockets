@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Mammatus\Http\Server\WebSockets\Result;
 
-use Mammatus\Http\Server\WebSockets\Result;
+use Mammatus\Http\Server\WebSockets\Result as ResultContract;
 
-final class Array_ implements Result
+final class Array_ implements ResultContract
 {
     private array $array;
 

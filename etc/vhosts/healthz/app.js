@@ -5,10 +5,14 @@ const wamp = new Client(
     'healthz'
 );
 
+wamp.topic('healthz').map(args => args.args[0]).subscribe((broadcast => {
+    document.getElementById('websocket_subscription').innerHTML = broadcast.status;
+}));
+
 setInterval(() => fetch('http://' + location.host + '/healthz').then(response => response.json()).then(response => {
     document.getElementById('xhr').innerHTML = response.result;
 }), 1338);
 
 setInterval(() => wamp.call('healthz').toPromise().then(args => args.args[0]).then(response => {
-    document.getElementById('websocket').innerHTML = response.result;
+    document.getElementById('websocket_rpc').innerHTML = response.result;
 }), 1337);

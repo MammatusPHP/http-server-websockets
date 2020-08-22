@@ -18,6 +18,7 @@ use Composer\Script\ScriptEvents;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Mammatus\Http\Server\Annotations\Bus as BusAnnotation;
 use Mammatus\Http\Server\Annotations\Vhost as VhostAnnotation;
+use Mammatus\Http\Server\Annotations\WebSocket\Broadcast as BroadcastAnnotation;
 use Mammatus\Http\Server\Annotations\WebSocket\Realm as RealmAnnotation;
 use Mammatus\Http\Server\Annotations\WebSocket\Rpc as RpcAnnotation;
 use Mammatus\Http\Server\Annotations\WebSocket\Subscription as SubscriptionAnnotation;
@@ -25,6 +26,7 @@ use Mammatus\Http\Server\Configuration\Bus;
 use Mammatus\Http\Server\Configuration\Handler;
 use Mammatus\Http\Server\Configuration\Server;
 use Mammatus\Http\Server\Configuration\Vhost;
+use Mammatus\Http\Server\Configuration\WebSocket\Broadcast;
 use Mammatus\Http\Server\Configuration\WebSocket\Handler as WebSocketHandler;
 use Mammatus\Http\Server\Configuration\WebSocket\Realm;
 use Mammatus\Http\Server\Configuration\WebSocket\Rpc;
@@ -267,6 +269,10 @@ final class Installer implements PluginInterface, EventSubscriberInterface
                                 return false;
                             }
 
+                            if (array_key_exists(BroadcastAnnotation::class, $classNAnnotations['annotations'])) {
+                                return true;
+                            }
+
                             if (! array_key_exists(BusAnnotation::class, $classNAnnotations['annotations'])) {
                                 return false;
                             }
@@ -291,6 +297,12 @@ final class Installer implements PluginInterface, EventSubscriberInterface
                         })->toArray()->toPromise()->then(static function (array $handlers) {
                             $realms = [];
                             foreach ($handlers as $handler) {
+                                if (!isset($handler['annotations'][RealmAnnotation::class])) {
+                                    continue;
+                                }
+                                if (!isset($handler['annotations'][BusAnnotation::class])) {
+                                    continue;
+                                }
                                 $realms[$handler['annotations'][RealmAnnotation::class]->realm()][$handler['annotations'][BusAnnotation::class]->bus()][] = $handler;
                             }
 
@@ -298,8 +310,9 @@ final class Installer implements PluginInterface, EventSubscriberInterface
                             foreach ($realms as $name => $busses) {
                                 $realmRpcs = [];
                                 $realmSubscriptions = [];
-                                foreach ($busses as $bus => $handlers) {
-                                    foreach ($handlers as $handler) {
+                                $realmBroadcasts = [];
+                                foreach ($busses as $bus => $busHandlers) {
+                                    foreach ($busHandlers as $handler) {
                                         if (array_key_exists(RpcAnnotation::class, $handler['annotations'])) {
                                             $realmRpcs[] = new Rpc(
                                                 $handler['annotations'][RpcAnnotation::class]->rpc(),
@@ -309,10 +322,16 @@ final class Installer implements PluginInterface, EventSubscriberInterface
                                         }
                                     }
                                 }
+                                foreach ($handlers as $handler) {
+                                    if (array_key_exists(BroadcastAnnotation::class, $handler['annotations'])/* && $handler['annotations'][BroadcastAnnotation::class]->realm() === $name*/) {
+                                        $realmBroadcasts[] = new Broadcast($handler['class']);
+                                    }
+                                }
                                 $realmInstances[] = new Realm(
                                     $name,
                                     $realmRpcs,
                                     $realmSubscriptions,
+                                    $realmBroadcasts,
                                     array_keys($busses),
                                 );
                             }

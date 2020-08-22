@@ -22,6 +22,7 @@ use League\Tactician\Handler\MethodNameInflector\HandleInflector;
 use Mammatus\ContainerFactory;
 use Mammatus\Http\Server\Middleware\Request;
 use Mammatus\Http\Server\Middleware\RequestHandler;
+use Mammatus\Http\Server\Web\UnformattedContent;
 use Mammatus\Http\Server\Web\ResponseTransformerMiddleware;
 use Mezzio\Helper\ServerUrlHelper;
 use Mezzio\Helper\ServerUrlMiddleware;
@@ -125,7 +126,7 @@ final class Worker_{{ server.vhost().name() }} implements Worker
             [
                 'application/json' => new Json(),
                 'text/html'        => new StringCast(),
-                'text/plain'        => new StringCast(),
+                'text/plain'       => new StringCast(),
             ],
             $streamFactory,
         ));
@@ -135,6 +136,7 @@ final class Worker_{{ server.vhost().name() }} implements Worker
         $this->broker->append(new ImplicitOptionsMiddleware($responseFactoryCallable));
         $this->broker->append(new MethodNotAllowedMiddleware($responseFactoryCallable));
         $this->broker->append(new UrlHelperMiddleware(new UrlHelper($router)));
+        $this->broker->append(new UnformattedContent());
         $this->broker->append(new DispatchMiddleware());
         $this->handler = new RequestHandler(static fn (ServerRequestInterface $request) => new \React\Http\Message\Response(404));
     }

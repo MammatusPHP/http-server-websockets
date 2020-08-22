@@ -69,7 +69,6 @@ abstract class AbstractConfiguration
                         new ArrayCache(), // TODO: Add support for other cache storages
                     ),
                     {% endif %}
-                    new UnformattedContent(),
                     static fn(ServerRequestInterface $request): PromiseInterface => $workerPool_{{ server.vhost().name() }}->perform(new \Mammatus\Http\Server\Middleware\Work(new \Mammatus\Http\Server\Middleware\Request($request))),
                 ]
             )
