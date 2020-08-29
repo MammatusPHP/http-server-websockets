@@ -1,4 +1,6 @@
-time docker run --rm -w `pwd` -v `pwd`:`pwd` -p 9666"9666  -it wyrihaximusnet/php:7.4-zts-alpine3.11-dev php ./vendor/bin/mammatus
+```bash
+time docker run --rm -w `pwd` -v `pwd`:`pwd` -p 9666:9666  -it wyrihaximusnet/php:7.4-zts-alpine3.11 php ./vendor/bin/mammatus
+```
 
 
 # HTTP Server command
