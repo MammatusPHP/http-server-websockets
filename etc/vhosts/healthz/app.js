@@ -16,3 +16,5 @@ setInterval(() => fetch('http://' + location.host + '/healthz').then(response =>
 setInterval(() => wamp.call('healthz').toPromise().then(args => args.args[0]).then(response => {
     document.getElementById('websocket_rpc').innerHTML = response.result;
 }), 1337);
+
+setInterval(() => wamp.publish('client_healthz', 'healthy client'), 1336);

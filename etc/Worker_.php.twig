@@ -76,9 +76,9 @@ final class Worker_{{ server.vhost().name() }} implements Worker
 
         {% for bus in server.busses() %}
         $serviceBus_{{ bus.name() }} = new ServiceBus(new CommandBus([new ResponseTransformerMiddleware(), CommandHandlerMiddlewareFactory_{{ server.vhost().name() }}_{{ bus.name() }}::create($container)]));
-        {% for handler in bus.handlers() %}
-        $routeCollector->route('{{ handler.path() }}', new RequestHandlerMiddleware(new \{{ handler.handler() }}(new ExecuteQuery($serviceBus_{{ bus.name() }}, $namedConstructor, \{{ handler.command() }}::class), $responseFactory)), ['{{ handler.methods()|join("', '") }}']);
         {% endfor %}
+        {% for handler in server.handlers() %}
+        $routeCollector->route('{{ handler.path() }}', new RequestHandlerMiddleware(new \{{ handler.handler() }}(new ExecuteQuery($serviceBus_{{ handler.bus.name() }}, $namedConstructor, \{{ handler.command() }}::class), $responseFactory)), ['{{ handler.methods()|join("', '") }}']);
         {% endfor %}
 
         $this->broker = new Broker();

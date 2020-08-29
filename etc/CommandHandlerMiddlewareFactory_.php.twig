@@ -22,7 +22,7 @@ final class CommandHandlerMiddlewareFactory_{{ server.vhost().name() }}_{{ bus.n
                 $container,
                 [
                     {% for handler in bus.handlers() %}
-                        \{{ handler.command() }}::class => \{{ handler.commandHandler() }}::class,
+                        \{{ handler.command() }}::class => \{{ handler.handler() }}::class,
                     {% endfor %}
                 ]
             ),

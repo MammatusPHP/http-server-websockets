@@ -46,7 +46,7 @@ final class RouterFactory_{{ server.vhost().name() }} implements Listener
         $busses = [];
         {% for realm in server.realms() %}
         {% for bus in realm.busses() %}
-        $busses['{{ server.vhost().name() }}']['{{ bus }}'] = new ServiceBus(new CommandBus([new ResponseTransformerMiddleware(), CommandHandlerMiddlewareFactory_{{ server.vhost().name() }}_{{ bus }}::create($this->container)]));
+        $busses['{{ server.vhost().name() }}']['{{ bus.name() }}'] = new ServiceBus(new CommandBus([new ResponseTransformerMiddleware(), CommandHandlerMiddlewareFactory_{{ server.vhost().name() }}_{{ bus.name() }}::create($this->container)]));
         {% endfor %}
         {% endfor %}
 
@@ -55,7 +55,7 @@ final class RouterFactory_{{ server.vhost().name() }} implements Listener
         $internalClient_{{ realm.name() }}->on('open', function (ClientSession $session) use ($busses): void {
             {% for rpc in realm.rpcs() %}
             $session->register('{{ rpc.name() }}', static fn (array $args): PromiseInterface => $busses['{{ server.vhost().name() }}']['{{ rpc.bus() }}']->handle(\{{ rpc.command() }}::fromInput(new RpcInput($args))));
-            $this->logger->debug('Registered RPC "{{ rpc.name() }}" on realm "{{ realm.name() }}"');
+            $this->logger->debug('Registered RPC "{{ rpc.name() }}" on realm "{{ realm.name() }}" for bus "{{ rpc.bus() }}" on the "{{ server.vhost().name() }}" vhost');
             {% endfor %}
             {% if realm.broadcasts()|length > 0 %}
             $broadcaster_{{ realm.name() }} = new Broadcaster($session);
@@ -63,11 +63,14 @@ final class RouterFactory_{{ server.vhost().name() }} implements Listener
             {% for broadcast in realm.broadcasts() %}
             $this->container->get(\{{ broadcast.class() }}::class)->broadcast($broadcaster_{{ realm.name() }});
             {% endfor %}
+            {% for subscription in realm.subscriptions() %}
+            $session->subscribe('{{ subscription.name() }}', static fn (array $args): PromiseInterface => $busses['{{ server.vhost().name() }}']['{{ server.vhost().name() }}']->handle(\{{ subscription.command() }}::fromInput(new RpcInput($args))));
+            {% endfor %}
         });
         $internalClient_{{ realm.name() }}->on('close', function (ClientSession $session): void {
             {% for rpc in realm.rpcs() %}
             $session->unregister('{{ rpc.name() }}');
-            $this->logger->debug('Unregistered RPC "{{ rpc.name() }}" on realm "{{ realm.name() }}"');
+            $this->logger->debug('Unregistered RPC "{{ rpc.name() }}" on realm "{{ realm.name() }}" for bus "{{ rpc.bus() }}" on the "{{ server.vhost().name() }}" vhost');
             {% endfor %}
         });
         $this->router->addInternalClient($internalClient_{{ realm.name() }});

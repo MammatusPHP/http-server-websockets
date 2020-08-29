@@ -12,8 +12,7 @@ use Psr\Http\Message\ResponseInterface;
 
 /**
  * @Vhost("healthz")
- * @Bus("healthz")
- * @FetchEndpoint(path="/", query=FetchIndex::class, name="FetchIndex")
+ * @FetchEndpoint(app="healthz", path="/", query=FetchIndex::class, name="FetchIndex")
  */
 final class IndexHandler
 {

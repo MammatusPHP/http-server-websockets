@@ -30,6 +30,7 @@ use Mammatus\Http\Server\Configuration\WebSocket\Broadcast;
 use Mammatus\Http\Server\Configuration\WebSocket\Handler as WebSocketHandler;
 use Mammatus\Http\Server\Configuration\WebSocket\Realm;
 use Mammatus\Http\Server\Configuration\WebSocket\Rpc;
+use Mammatus\Http\Server\Configuration\WebSocket\Subscription;
 use React\EventLoop\StreamSelectLoop;
 use Roave\BetterReflection\BetterReflection;
 use Roave\BetterReflection\Reflection\ReflectionClass;
@@ -281,6 +282,10 @@ final class Installer implements PluginInterface, EventSubscriberInterface
                                 return false;
                             }
 
+                            if (array_key_exists(SubscriptionAnnotation::class, $classNAnnotations['annotations'])) {
+                                return true;
+                            }
+
                             if (! array_key_exists(RpcAnnotation::class, $classNAnnotations['annotations']) && ! array_key_exists(SubscriptionAnnotation::class, $classNAnnotations['annotations'])) {
                                 return false;
                             }
@@ -325,6 +330,11 @@ final class Installer implements PluginInterface, EventSubscriberInterface
                                 foreach ($handlers as $handler) {
                                     if (array_key_exists(BroadcastAnnotation::class, $handler['annotations'])/* && $handler['annotations'][BroadcastAnnotation::class]->realm() === $name*/) {
                                         $realmBroadcasts[] = new Broadcast($handler['class']);
+                                    }
+                                }
+                                foreach ($handlers as $handler) {
+                                    if (array_key_exists(SubscriptionAnnotation::class, $handler['annotations'])/* && $handler['annotations'][SubscriptionAnnotation::class]->realm() === $name*/) {
+                                        $realmSubscriptions[] = new Subscription($handler['annotations'][SubscriptionAnnotation::class]->topic(), $handler['annotations'][SubscriptionAnnotation::class]->command());
                                     }
                                 }
                                 $realmInstances[] = new Realm(
