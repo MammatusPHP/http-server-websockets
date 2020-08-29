@@ -10,6 +10,7 @@ use Mammatus\Http\Server\Annotations\Vhost;
 use Mammatus\Http\Server\Annotations\WebSocket\Realm;
 use Mammatus\Http\Server\Annotations\WebSocket\Rpc;
 use Mammatus\Http\Server\Annotations\WebSocket\Subscription;
+use Psr\Log\LoggerInterface;
 
 /**
  * @Vhost("healthz")
@@ -17,8 +18,15 @@ use Mammatus\Http\Server\Annotations\WebSocket\Subscription;
  */
 final class ClientHealthzHandler
 {
+    private LoggerInterface $logger;
+
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
+
     public function handle(ReceiveHealthz $healthz): void
     {
-        echo 'A client resports to be healthy, yay!', PHP_EOL;
+        $this->logger->notice('A client resports to be healthy with the following message "' . $healthz->message() . '", yay!');
     }
 }

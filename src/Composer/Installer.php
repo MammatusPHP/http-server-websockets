@@ -274,20 +274,12 @@ final class Installer implements PluginInterface, EventSubscriberInterface
                                 return true;
                             }
 
-                            if (! array_key_exists(BusAnnotation::class, $classNAnnotations['annotations'])) {
-                                return false;
-                            }
-
-                            if (! array_key_exists(RealmAnnotation::class, $classNAnnotations['annotations'])) {
-                                return false;
-                            }
-
                             if (array_key_exists(SubscriptionAnnotation::class, $classNAnnotations['annotations'])) {
                                 return true;
                             }
 
-                            if (! array_key_exists(RpcAnnotation::class, $classNAnnotations['annotations']) && ! array_key_exists(SubscriptionAnnotation::class, $classNAnnotations['annotations'])) {
-                                return false;
+                            if (array_key_exists(RpcAnnotation::class, $classNAnnotations['annotations'])) {
+                                return true;
                             }
 
                             foreach ($classNAnnotations['annotations'] as $annotation) {
@@ -300,58 +292,45 @@ final class Installer implements PluginInterface, EventSubscriberInterface
                         })->filter(static function (array $classNAnnotations) use ($vhost): bool {
                             return $classNAnnotations['annotations'][VhostAnnotation::class]->vhost() === $vhost->name();
                         })->toArray()->toPromise()->then(static function (array $handlers) {
-                            $realms = [];
+                            $realms = $busses = $rpcs = $subscriptions = $broadcasts = [];
                             foreach ($handlers as $handler) {
-                                if (!isset($handler['annotations'][RealmAnnotation::class])) {
-                                    continue;
+                                if (isset($handler['annotations'][BroadcastAnnotation::class])) {
+                                    $broadcasts[$handler['annotations'][BroadcastAnnotation::class]->realm()][] = new Broadcast($handler['class']);
                                 }
-                                if (!isset($handler['annotations'][BusAnnotation::class])) {
-                                    continue;
+                                if (isset($handler['annotations'][RpcAnnotation::class])) {
+                                    $rpcs[$handler['annotations'][RpcAnnotation::class]->realm()][] = new Rpc(
+                                        $handler['annotations'][RpcAnnotation::class]->rpc(),
+                                        $handler['annotations'][RpcAnnotation::class]->command(),
+                                        $handler['annotations'][RpcAnnotation::class]->bus(),
+                                    );
+                                    $busses[] = $handler['annotations'][RpcAnnotation::class]->bus();
                                 }
-                                $realms[$handler['annotations'][RealmAnnotation::class]->realm()][$handler['annotations'][BusAnnotation::class]->bus()][] = $handler;
+                                if (isset($handler['annotations'][SubscriptionAnnotation::class])) {
+                                    $subscriptions[$handler['annotations'][SubscriptionAnnotation::class]->realm()][] = new Subscription(
+                                        $handler['annotations'][SubscriptionAnnotation::class]->topic(),
+                                        $handler['annotations'][SubscriptionAnnotation::class]->command(),
+                                        $handler['annotations'][SubscriptionAnnotation::class]->bus(),
+                                    );
+                                    $busses[] = $handler['annotations'][SubscriptionAnnotation::class]->bus();
+                                }
                             }
 
-                            $realmInstances = [];
-                            foreach ($realms as $name => $busses) {
-                                $realmRpcs = [];
-                                $realmSubscriptions = [];
-                                $realmBroadcasts = [];
-                                foreach ($busses as $bus => $busHandlers) {
-                                    foreach ($busHandlers as $handler) {
-                                        if (array_key_exists(RpcAnnotation::class, $handler['annotations'])) {
-                                            $realmRpcs[] = new Rpc(
-                                                $handler['annotations'][RpcAnnotation::class]->rpc(),
-                                                $handler['annotations'][RpcAnnotation::class]->command(),
-                                                $bus,
-                                            );
-                                        }
-                                    }
-                                }
-                                foreach ($handlers as $handler) {
-                                    if (array_key_exists(BroadcastAnnotation::class, $handler['annotations'])/* && $handler['annotations'][BroadcastAnnotation::class]->realm() === $name*/) {
-                                        $realmBroadcasts[] = new Broadcast($handler['class']);
-                                    }
-                                }
-                                foreach ($handlers as $handler) {
-                                    if (array_key_exists(SubscriptionAnnotation::class, $handler['annotations'])/* && $handler['annotations'][SubscriptionAnnotation::class]->realm() === $name*/) {
-                                        $realmSubscriptions[] = new Subscription($handler['annotations'][SubscriptionAnnotation::class]->topic(), $handler['annotations'][SubscriptionAnnotation::class]->command());
-                                    }
-                                }
-                                $realmInstances[] = new Realm(
-                                    $name,
-                                    $realmRpcs,
-                                    $realmSubscriptions,
-                                    $realmBroadcasts,
-                                    array_keys($busses),
+                            foreach (array_unique(array_merge(array_keys($broadcasts), array_keys($rpcs), array_keys($subscriptions))) as $realm) {
+                                $realms[] = new Realm(
+                                    $realm,
+                                    $rpcs[$realm] ?? [],
+                                    $subscriptions[$realm] ?? [],
+                                    $broadcasts[$realm] ?? [],
+                                    array_unique(array_values($busses)),
                                 );
                             }
 
-                            return $realmInstances;
+                            return $realms;
                         }),
                         new StreamSelectLoop(),
                         1
                     ),
-                    ...await(
+                    await(
                         $classes()->flatMap(static function (ReflectionClass $class) use ($annotationReader): Observable {
                             $annotations = [];
                             foreach ($annotationReader->getClassAnnotations(new \ReflectionClass($class->getName())) as $annotation) {
@@ -369,8 +348,61 @@ final class Installer implements PluginInterface, EventSubscriberInterface
                                 return false;
                             }
 
-                            if (! array_key_exists(BusAnnotation::class, $classNAnnotations['annotations'])) {
+                            foreach ($classNAnnotations['annotations'] as $annotation) {
+                                if (is_subclass_of($annotation, Routing\Endpoint::class)) {
+                                    return true;
+                                }
+                            }
+
+                            return false;
+                        })->filter(static function (array $classNAnnotations) use ($vhost): bool {
+                            return $classNAnnotations['annotations'][VhostAnnotation::class]->vhost() === $vhost->name();
+                        })->toArray()->toPromise()->then(static function (array $handlers) {
+                            $serverHandlers = [];
+                            foreach ($handlers as $handler) {
+                                foreach ($handler['annotations'] as $annotation) {
+                                    if (is_subclass_of($annotation, Routing\Endpoint::class)) {
+                                        $serverHandlers[] = new Handler(
+                                            $annotation->methods,
+                                            $annotation->app,
+                                            $annotation->query,
+                                            $handler['class'],
+                                            self::ROUTE_BEHAVIOR[get_class($annotation)],
+                                            $annotation->path,
+                                        );
+                                    }
+                                }
+                            }
+
+                            return $serverHandlers;
+                        }),
+                        new StreamSelectLoop(),
+                        1
+                    ),
+                    await(
+                        $classes()->flatMap(static function (ReflectionClass $class) use ($annotationReader): Observable {
+                            $annotations = [];
+                            foreach ($annotationReader->getClassAnnotations(new \ReflectionClass($class->getName())) as $annotation) {
+                                $annotations[get_class($annotation)] = $annotation;
+                            }
+
+                            return observableFromArray([
+                                [
+                                    'class' => $class->getName(),
+                                    'annotations' => $annotations,
+                                ],
+                            ]);
+                        })->filter(static function (array $classNAnnotations): bool {
+                            if (! array_key_exists(VhostAnnotation::class, $classNAnnotations['annotations'])) {
                                 return false;
+                            }
+
+                            if (array_key_exists(SubscriptionAnnotation::class, $classNAnnotations['annotations'])) {
+                                return true;
+                            }
+
+                            if (array_key_exists(RpcAnnotation::class, $classNAnnotations['annotations'])) {
+                                return true;
                             }
 
                             foreach ($classNAnnotations['annotations'] as $annotation) {
@@ -385,31 +417,59 @@ final class Installer implements PluginInterface, EventSubscriberInterface
                         })->toArray()->toPromise()->then(static function (array $handlers) {
                             $busses = [];
                             foreach ($handlers as $handler) {
-                                $busses[$handler['annotations'][BusAnnotation::class]->bus()][] = $handler;
+                                foreach ($handler['annotations'] as $annotation) {
+                                    if (is_subclass_of($annotation, Routing\Endpoint::class)) {
+                                        $busses[] = $annotation->app;
+                                    }
+                                }
+                                if (isset($handler['annotations'][RpcAnnotation::class])) {
+                                    $busses[] = $handler['annotations'][RpcAnnotation::class]->bus();
+                                }
+                                if (isset($handler['annotations'][SubscriptionAnnotation::class])) {
+                                    $busses[] = $handler['annotations'][SubscriptionAnnotation::class]->bus();
+                                }
                             }
 
                             $busInstances = [];
-                            foreach ($busses as $name => $handlers) {
+                            foreach (array_unique($busses) as $bus) {
                                 $busInstances[] = new Bus(
-                                    $name,
-                                    ...array_map(
-                                        static function (array $handler) {
-                                            foreach ($handler['annotations'] as $annotation) {
-                                                if (is_subclass_of($annotation, Routing\Endpoint::class)) {
-                                                    $endpoint = $annotation;
-                                                    break;
-                                                }
-                                            }
+                                    $bus,
+                                    ...array_filter(
+                                        array_map(
+                                            static function (array $handler) use ($bus) {
+                                                foreach ($handler['annotations'] as $annotation) {
+                                                    if (is_subclass_of($annotation, Routing\Endpoint::class)) {
+                                                        if ($annotation->app !== $bus) {
+                                                            continue;
+                                                        }
 
-                                            return new Handler(
-                                                $endpoint->methods,
-                                                $endpoint->query,
-                                                $handler['class'],
-                                                self::ROUTE_BEHAVIOR[get_class($endpoint)],
-                                                $endpoint->path,
-                                            );
-                                        },
-                                        array_values($handlers),
+                                                        return new Bus\Handler(
+                                                            $bus,
+                                                            $annotation->query,
+                                                            $handler['class'],
+                                                        );
+                                                    }
+                                                }
+
+                                                if (isset($handler['annotations'][RpcAnnotation::class])) {
+                                                    return new Bus\Handler(
+                                                        $bus,
+                                                        $handler['annotations'][RpcAnnotation::class]->command(),
+                                                        $handler['class'],
+                                                    );
+                                                }
+
+                                                if (isset($handler['annotations'][SubscriptionAnnotation::class])) {
+                                                    return new Bus\Handler(
+                                                        $bus,
+                                                        $handler['annotations'][SubscriptionAnnotation::class]->command(),
+                                                        $handler['class'],
+                                                    );
+                                                }
+                                            },
+                                            array_values($handlers),
+                                        ),
+                                        static fn (?Bus\Handler $handler) => $handler !== null,
                                     ),
                                 );
                             }

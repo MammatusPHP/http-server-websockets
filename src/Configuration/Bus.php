@@ -8,13 +8,13 @@ final class Bus
 {
     private string $name;
 
-    /** @var array<Handler> */
+    /** @var array<Bus\Handler> */
     private array $handlers = [];
 
     /**
-     * @param array<Handler> $handlers
+     * @param array<Bus\Handler> $handlers
      */
-    public function __construct(string $name, Handler ...$handlers)
+    public function __construct(string $name, Bus\Handler ...$handlers)
     {
         $this->name     = $name;
         $this->handlers = $handlers;

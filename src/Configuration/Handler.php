@@ -8,6 +8,7 @@ final class Handler
 {
     /** @var array<string>  */
     private array $methods;
+    private string $bus;
     private string $command;
     private string $commandHandler;
     private string $handler;
@@ -16,10 +17,11 @@ final class Handler
     /**
      * @param array<string> $methods
      */
-    public function __construct(array $methods, string $command, string $commandHandler, string $handler, string $path)
+    public function __construct(array $methods, string $bus, string $command, string $commandHandler, string $handler, string $path)
     {
         $this->methods        = $methods;
         $this->command        = $command;
+        $this->bus        = $bus;
         $this->commandHandler = $commandHandler;
         $this->handler        = $handler;
         $this->path           = $path;
@@ -28,6 +30,11 @@ final class Handler
     public function methods(): array
     {
         return $this->methods;
+    }
+
+    public function bus(): string
+    {
+        return $this->bus;
     }
 
     public function command(): string

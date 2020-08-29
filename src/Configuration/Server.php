@@ -12,17 +12,30 @@ final class Server
     private Vhost $vhost;
     /** @var array<\Mammatus\Http\Server\Configuration\WebSocket\Realm>  */
     private array $realms;
+    /** @var array<Handler>  */
+    private array $handlers;
     /** @var array<Bus>  */
     private array $busses;
 
     /**
      * @param array<\Mammatus\Http\Server\Configuration\WebSocket\Realm> $realms
+     * @param array<Handler> $handlers
+     * @param array<Bus> $busses
      */
-    public function __construct(Vhost $vhost, array $realms, Bus ...$busses)
+    public function __construct(Vhost $vhost, array $realms, array $handlers, array $busses)
     {
         $this->vhost  = $vhost;
         $this->realms = $realms;
+        $this->handlers = $handlers;
         $this->busses = $busses;
+    }
+
+    /**
+     * @return iterable<Handler>
+     */
+    public function handlers(): iterable
+    {
+        yield from $this->handlers;
     }
 
     /**

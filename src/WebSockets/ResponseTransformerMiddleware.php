@@ -17,6 +17,10 @@ final class ResponseTransformerMiddleware implements Middleware
     {
         $result = $next($command);
 
+        if ($result === null) {
+            return resolve($result);
+        }
+
         if ($result instanceof PromiseInterface) {
             return $result->then(fn (object $result) => $this->extractResult($result));
         }
