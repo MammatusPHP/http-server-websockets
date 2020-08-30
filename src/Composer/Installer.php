@@ -86,7 +86,7 @@ final class Installer implements PluginInterface, EventSubscriberInterface
      */
     public static function getSubscribedEvents(): array
     {
-        return [ScriptEvents::PRE_AUTOLOAD_DUMP => ['findVhosts', -666]];
+        return [ScriptEvents::PRE_AUTOLOAD_DUMP => 'findVhosts'];
     }
 
     public function activate(Composer $composer, IOInterface $io): void
@@ -135,7 +135,7 @@ final class Installer implements PluginInterface, EventSubscriberInterface
 
         $classContents = render(
             file_get_contents(
-                self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage()) . '/etc/AbstractConfiguration.php.twig'
+                self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage()) . '/etc/generated_templates/AbstractConfiguration.php.twig'
             ),
             ['servers' => $vhosts]
         );
@@ -150,7 +150,7 @@ final class Installer implements PluginInterface, EventSubscriberInterface
         foreach ($vhosts as $vhost) {
             $classContents = render(
                 file_get_contents(
-                    self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage()) . '/etc/Worker_.php.twig'
+                    self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage()) . '/etc/generated_templates/Worker_.php.twig'
                 ),
                 ['server' => $vhost]
             );
@@ -161,7 +161,7 @@ final class Installer implements PluginInterface, EventSubscriberInterface
 
             $classContents = render(
                 file_get_contents(
-                    self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage()) . '/etc/WorkerFactory_.php.twig'
+                    self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage()) . '/etc/generated_templates/WorkerFactory_.php.twig'
                 ),
                 ['server' => $vhost]
             );
@@ -172,7 +172,7 @@ final class Installer implements PluginInterface, EventSubscriberInterface
 
             $classContents = render(
                 file_get_contents(
-                    self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage()) . '/etc/RouterFactory_.php.twig'
+                    self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage()) . '/etc/generated_templates/RouterFactory_.php.twig'
                 ),
                 ['server' => $vhost]
             );
@@ -184,7 +184,7 @@ final class Installer implements PluginInterface, EventSubscriberInterface
             foreach ($vhost->busses() as $bus) {
                 $classContents = render(
                     file_get_contents(
-                        self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage()) . '/etc/CommandHandlerMiddlewareFactory_.php.twig'
+                        self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage()) . '/etc/generated_templates/CommandHandlerMiddlewareFactory_.php.twig'
                     ),
                     ['server' => $vhost, 'bus' => $bus]
                 );

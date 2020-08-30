@@ -8,9 +8,9 @@ use Chimera\Input;
 
 final class RpcInput implements Input
 {
-    private array $data;
+    private ?object $data;
 
-    public function __construct(array $data)
+    public function __construct(?object $data)
     {
         $this->data = $data;
     }
@@ -20,8 +20,16 @@ final class RpcInput implements Input
         return null;
     }
 
-    public function getData(): array
+    public function data(): ?object
     {
         return $this->data;
+    }
+
+    /**
+     * @deprecated
+     */
+    public function getData(): array
+    {
+        return [$this->data];
     }
 }
