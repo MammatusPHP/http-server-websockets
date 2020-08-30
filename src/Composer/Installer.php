@@ -150,23 +150,23 @@ final class Installer implements PluginInterface, EventSubscriberInterface
         foreach ($vhosts as $vhost) {
             $classContents = render(
                 file_get_contents(
-                    self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage()) . '/etc/generated_templates/Worker_.php.twig'
+                    self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage()) . '/etc/generated_templates/RequestWorker_.php.twig'
                 ),
                 ['server' => $vhost]
             );
             $installPath = self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage())
-                . '/src/Generated/Worker_' . $vhost->vhost()->name() . '.php';
+                . '/src/Generated/RequestWorker_' . $vhost->vhost()->name() . '.php';
             file_put_contents($installPath, $classContents);
             chmod($installPath, 0664);
 
             $classContents = render(
                 file_get_contents(
-                    self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage()) . '/etc/generated_templates/WorkerFactory_.php.twig'
+                    self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage()) . '/etc/generated_templates/RequestWorkerFactory_.php.twig'
                 ),
                 ['server' => $vhost]
             );
             $installPath = self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage())
-                . '/src/Generated/WorkerFactory_' . $vhost->vhost()->name() . '.php';
+                . '/src/Generated/RequestWorkerFactory_' . $vhost->vhost()->name() . '.php';
             file_put_contents($installPath, $classContents);
             chmod($installPath, 0664);
 

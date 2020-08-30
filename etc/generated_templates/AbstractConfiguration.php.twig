@@ -48,7 +48,7 @@ abstract class AbstractConfiguration
         {% for server in servers %}
         $workerPool_{{ server.vhost().name() }}    = new WorkerPool(
             $rpFactory,
-            new WorkerFactory_{{ server.vhost().name() }}($channelLogger),
+            new RequestWorkerFactory_{{ server.vhost().name() }}($channelLogger),
             (int) '13'
         );
         $http_server_{{ server.vhost().name() }} = new HttpServer($loop, ...array_merge(
