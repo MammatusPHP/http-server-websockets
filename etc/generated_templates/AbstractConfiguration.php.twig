@@ -36,7 +36,6 @@ use function WyriHaximus\iteratorOrArrayToArray;
 abstract class AbstractConfiguration
 {
     private bool $initialized = false;
-    private Server $server_healtz;
 
     abstract protected function middleware(): iterable;
 
