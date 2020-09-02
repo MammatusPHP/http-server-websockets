@@ -184,6 +184,28 @@ final class Installer implements PluginInterface, EventSubscriberInterface
             foreach ($vhost->busses() as $bus) {
                 $classContents = render(
                     file_get_contents(
+                        self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage()) . '/etc/generated_templates/WebSocketWorker_.php.twig'
+                    ),
+                    ['server' => $vhost, 'bus' => $bus]
+                );
+                $installPath = self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage())
+                    . '/src/Generated/WebSocketWorker_' . $vhost->vhost()->name() . '_' . $bus->name() . '.php';
+                file_put_contents($installPath, $classContents);
+                chmod($installPath, 0664);
+
+                $classContents = render(
+                    file_get_contents(
+                        self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage()) . '/etc/generated_templates/WebSocketWorkerFactory_.php.twig'
+                    ),
+                    ['server' => $vhost, 'bus' => $bus]
+                );
+                $installPath = self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage())
+                    . '/src/Generated/WebSocketWorkerFactory_' . $vhost->vhost()->name() . '_' . $bus->name() . '.php';
+                file_put_contents($installPath, $classContents);
+                chmod($installPath, 0664);
+
+                $classContents = render(
+                    file_get_contents(
                         self::locateRootPackageInstallPath($composer->getConfig(), $composer->getPackage()) . '/etc/generated_templates/CommandHandlerMiddlewareFactory_.php.twig'
                     ),
                     ['server' => $vhost, 'bus' => $bus]

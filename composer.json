@@ -39,6 +39,7 @@
         "react-parallel/event-loop": "^1.0",
         "react-parallel/infinite-pool": "^2.0",
         "react-parallel/logger": "dev-master",
+        "react-parallel/object-proxy": "dev-master",
         "react-parallel/worker-pool": "^1.0",
         "react/http": "^1.0",
         "roave/better-reflection": "^4.0",

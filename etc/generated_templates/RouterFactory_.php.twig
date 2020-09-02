@@ -3,10 +3,8 @@
 // phpcs:disable
 namespace Mammatus\Http\Server\Generated;
 
-use Chimera\ServiceBus\Tactician\ServiceBus;
-use League\Tactician\CommandBus;
 use Mammatus\Http\Server\WebSockets\Broadcaster;
-use Mammatus\Http\Server\WebSockets\ResponseTransformerMiddleware;
+use Mammatus\Http\Server\WebSockets\Income;
 use Mammatus\Http\Server\WebSockets\RpcInput;
 use Mammatus\LifeCycleEvents\Initialize;
 use Mammatus\LifeCycleEvents\Shutdown;
@@ -14,6 +12,8 @@ use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use React\EventLoop\LoopInterface;
 use React\Promise\PromiseInterface;
+use ReactParallel\Factory;
+use ReactParallel\Pool\Worker\Worker as WorkerPool;
 use Thruway\Peer\Client;
 use Thruway\ClientSession;
 use Thruway\Peer\Router;
@@ -43,18 +43,23 @@ final class RouterFactory_{{ server.vhost().name() }} implements Listener
         }
 
         $this->router = new Router($this->loop);
-        $busses = [];
+        $rpFactory = $this->container->get(Factory::class);
+        $workerPools = [];
         {% for realm in server.realms() %}
         {% for bus in realm.busses() %}
-        $busses['{{ server.vhost().name() }}']['{{ bus }}'] = new ServiceBus(new CommandBus([new ResponseTransformerMiddleware(), CommandHandlerMiddlewareFactory_{{ server.vhost().name() }}_{{ bus }}::create($this->container)]));
+        $workerPools['{{ server.vhost().name() }}_{{ bus }}'] = new WorkerPool(
+            $rpFactory,
+            new WebSocketWorkerFactory_{{ server.vhost().name() }}_{{ bus }}($this->container),
+            (int) '13'
+        );
         {% endfor %}
         {% endfor %}
 
         {% for realm in server.realms() %}
         $internalClient_{{ realm.name() }} = new Client('{{ realm.name() }}', $this->loop);
-        $internalClient_{{ realm.name() }}->on('open', function (ClientSession $session) use ($busses): void {
+        $internalClient_{{ realm.name() }}->on('open', function (ClientSession $session) use ($workerPools): void {
             {% for rpc in realm.rpcs() %}
-            $session->register('{{ rpc.name() }}', static fn (array $args): PromiseInterface => $busses['{{ server.vhost().name() }}']['{{ rpc.bus() }}']->handle(\{{ rpc.command() }}::fromInput(new RpcInput($args[0] ?? null))));
+            $session->register('{{ rpc.name() }}', static fn (array $args): PromiseInterface => $workerPools['{{ server.vhost().name() }}_{{ rpc.bus() }}']->perform(new Income(\{{ rpc.command() }}::fromInput(new RpcInput($args[0] ?? null)))));
             $this->logger->debug('Registered RPC "{{ rpc.name() }}" on realm "{{ realm.name() }}" for bus "{{ rpc.bus() }}" on the "{{ server.vhost().name() }}" vhost');
             {% endfor %}
             {% if realm.broadcasts()|length > 0 %}
@@ -64,7 +69,7 @@ final class RouterFactory_{{ server.vhost().name() }} implements Listener
             $this->container->get(\{{ broadcast.class() }}::class)->broadcast($broadcaster_{{ realm.name() }});
             {% endfor %}
             {% for subscription in realm.subscriptions() %}
-            $session->subscribe('{{ subscription.name() }}', static fn (array $args): PromiseInterface => $busses['{{ server.vhost().name() }}']['{{ subscription.bus() }}']->handle(\{{ subscription.command() }}::fromInput(new RpcInput($args[0] ?? null))));
+            $session->subscribe('{{ subscription.name() }}', static fn (array $args): PromiseInterface => $workerPools['{{ server.vhost().name() }}_{{ subscription.bus() }}']->perform(new Income(\{{ subscription.command() }}::fromInput(new RpcInput($args[0] ?? null)))));
             {% endfor %}
         });
         $internalClient_{{ realm.name() }}->on('close', function (ClientSession $session): void {
