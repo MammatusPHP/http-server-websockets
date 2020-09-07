@@ -31,7 +31,7 @@
         "middlewares/response-time": "^1.0",
         "middlewares/uuid": "^1.0",
         "nikic/fast-route": "^1.2",
-        "nikic/php-parser": "4.6.0",
+        "nikic/php-parser": "4.6.0 as 4.9.0",
         "northwoods/broker": "^3.0",
         "opis/closure": "^3.5",
         "php-di-definitions/react-event-loop-inspected": "dev-master",
@@ -40,6 +40,7 @@
         "react-parallel/infinite-pool": "^2.0",
         "react-parallel/logger": "dev-master",
         "react-parallel/object-proxy": "dev-master",
+        "react-parallel/psr-11-container-proxy": "dev-master",
         "react-parallel/worker-pool": "^1.0",
         "react/http": "^1.0",
         "roave/better-reflection": "^4.0",
@@ -69,7 +70,8 @@
     },
     "require-dev": {
         "monolog/monolog": "^2.0",
-        "wyrihaximus/async-test-utilities": "^2.2"
+        "wyrihaximus/async-test-utilities": "2.2.0",
+        "wyrihaximus/test-utilities": "2.6.0"
     },
     "config": {
         "platform": {

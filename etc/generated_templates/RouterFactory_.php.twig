@@ -49,7 +49,7 @@ final class RouterFactory_{{ server.vhost().name() }} implements Listener
         {% for bus in realm.busses() %}
         $workerPools['{{ server.vhost().name() }}_{{ bus }}'] = new WorkerPool(
             $rpFactory,
-            new WebSocketWorkerFactory_{{ server.vhost().name() }}_{{ bus }}($this->container),
+            $this->container->get(WebSocketWorkerFactory_{{ server.vhost().name() }}_{{ bus }}::class),
             (int) '13'
         );
         {% endfor %}

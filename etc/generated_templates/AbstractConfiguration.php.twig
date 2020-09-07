@@ -19,6 +19,7 @@ use ReactInspector\HttpMiddleware\MiddlewareCollector;
 use ReactParallel\EventLoop\EventLoopBridge;
 use ReactParallel\Factory;
 use ReactParallel\Logger\Logger;
+use ReactParallel\ObjectProxy\Proxy;
 use ReactParallel\Pool\Infinite\Infinite;
 use ReactParallel\Pool\Worker\Worker as WorkerPool;
 use ReactParallel\Streams\RecvObservable;
@@ -43,11 +44,10 @@ abstract class AbstractConfiguration
     {
         \Thruway\Logging\Logger::set($logger);
         $rpFactory = $container->get(Factory::class);
-        $channelLogger = $container->get(Logger::class);
         {% for server in servers %}
         $workerPool_{{ server.vhost().name() }}    = new WorkerPool(
             $rpFactory,
-            new RequestWorkerFactory_{{ server.vhost().name() }}($channelLogger),
+            $container->get(RequestWorkerFactory_{{ server.vhost().name() }}::class),
             (int) '13'
         );
         $http_server_{{ server.vhost().name() }} = new HttpServer($loop, ...array_merge(

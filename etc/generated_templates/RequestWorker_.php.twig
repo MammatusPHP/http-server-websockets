@@ -41,10 +41,12 @@ use Middlewares\Expires;
 use Middlewares\ResponseTime;
 use Middlewares\Uuid;
 use Northwoods\Broker\Broker;
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
+use Psr\Log\LoggerInterface;
 use ReactParallel\Logger\Logger;
 use ReactParallel\Pool\Worker\Work\Work;
 use ReactParallel\Pool\Worker\Work\Worker;
@@ -59,9 +61,8 @@ final class RequestWorker_{{ server.vhost().name() }} implements Worker
     private Broker $broker;
     private RequestHandler $handler;
 
-    public function __construct(Logger $logger)
+    public function __construct(ContainerInterface $container)
     {
-        $container = ContainerFactory::create();
         $namedConstructor = $container->get(NamedConstructor::class);
         $responseFactory = new ResponseFactory();
         $responseFactoryCallable = static function () use ($responseFactory): ResponseFactoryInterface {
@@ -84,7 +85,7 @@ final class RequestWorker_{{ server.vhost().name() }} implements Worker
         $this->broker = new Broker();
         $this->broker->append(new ClientIp());
         $this->broker->append(new Uuid());
-        $this->broker->append((new AccessLog($logger))->format('[{{ server.vhost().name() }}] %a %l %u %Dms "%r" %>s %b "%{Referer}i" "%{User-Agent}i"')->
+        $this->broker->append((new AccessLog($container->get(LoggerInterface::class)))->format('[{{ server.vhost().name() }}] %a %l %u %Dms "%r" %>s %b "%{Referer}i" "%{User-Agent}i"')->
             ipAttribute('client-ip')->
             context(function (ServerRequestInterface $request, ResponseInterface $response) {
                 return [

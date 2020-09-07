@@ -8,6 +8,7 @@ use League\Tactician\CommandBus;
 use Mammatus\ContainerFactory;
 use Mammatus\Http\Server\WebSockets\Outcome;
 use Mammatus\Http\Server\WebSockets\ResponseTransformerMiddleware;
+use Psr\Container\ContainerInterface;
 use ReactParallel\Pool\Worker\Work\Work;
 use ReactParallel\Pool\Worker\Work\Worker;
 
@@ -18,9 +19,8 @@ final class WebSocketWorker_{{ server.vhost().name() }}_{{ bus.name()}} implemen
 {
     private ServiceBus $serviceBus;
 
-    public function __construct(/*ContainerInterface $container*/)
+    public function __construct(ContainerInterface $container)
     {
-        $container = ContainerFactory::create();
         $this->serviceBus = new ServiceBus(new CommandBus([new ResponseTransformerMiddleware(), CommandHandlerMiddlewareFactory_{{ server.vhost().name() }}_{{ bus.name() }}::create($container)]));
     }
 
