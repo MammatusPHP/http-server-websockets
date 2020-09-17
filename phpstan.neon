@@ -1,8 +1,12 @@
 parameters:
+	excludes_analyse:
+		- tests/bootstrap.php
+	ignoreErrors:
+		- '#has a nullable return type declaration#'
 	ergebnis:
 		classesAllowedToBeExtended:
-			- Mammatus\LifeCycleEvents\Promise\AbstractPromise
-			- Mammatus\Tests\LifeCycleEvents\Promise\AbstractPromiseTest
+			- Exception
+			- WyriHaximus\TestUtilities\TestCase
 
 includes:
 	- vendor/wyrihaximus/async-test-utilities/rules.neon

@@ -1,77 +1,21 @@
 {
-    "name": "mammatus/http-server",
-    "type": "composer-plugin",
-    "description": "\ud83d\udc19 Multi vhost HTTP Server",
+    "name": "mammatus/http-server-websockets",
+    "description": "\ud83d\udd78\ufe0f\ud83e\udde6 WebSockets for HTTP Server",
     "license": "MIT",
     "require": {
         "php": "^7.4",
-        "cakephp/collection": "^3.6",
-        "chimera/bus-tactician": "^0.3.0",
+        "ext-json": "^7.4",
+        "ancarda/psr7-string-stream": "^1.3",
+        "chimera/foundation": "^0.3.0",
         "chimera/mapping": "^0.3.0",
-        "chimera/routing": "^0.3.4",
-        "chimera/routing-expressive": "^0.3.0",
-        "composer-plugin-api": "^1.1",
-        "doctrine/annotations": "^1.6",
-        "joshdifabio/composed": "^1.0",
-        "laminas/laminas-diactoros": "^2.2",
-        "lcobucci/content-negotiation-middleware": "^2.2",
-        "lcobucci/jwt": "^3.3",
-        "mammatus/app": "dev-master",
-        "mammatus/http-server-annotations": "dev-master",
+        "league/tactician": "^1.0",
         "mammatus/http-server-contracts": "dev-master",
-        "mammatus/http-server-webroot": "dev-master",
-        "mammatus/life-cycle-events": "dev-master",
-        "mezzio/mezzio-helpers": "^5.3",
-        "mezzio/mezzio-router": "^3.1",
-        "middlewares/access-log": "^1.0",
-        "middlewares/cache": "^1.0",
-        "middlewares/client-ip": "^1.0",
-        "middlewares/filesystem": "^1.0",
-        "middlewares/https": "^1.1",
-        "middlewares/response-time": "^1.0",
-        "middlewares/uuid": "^1.0",
-        "nikic/fast-route": "^1.2",
-        "nikic/php-parser": "4.6.0 as 4.9.0",
-        "northwoods/broker": "^3.0",
-        "opis/closure": "^3.5",
-        "php-di-definitions/react-event-loop-inspected": "dev-master",
-        "react-inspector/http-middleware": "^1.0",
-        "react-parallel/event-loop": "^1.0",
-        "react-parallel/infinite-pool": "^2.0",
-        "react-parallel/logger": "dev-master",
-        "react-parallel/object-proxy": "dev-master",
-        "react-parallel/psr-11-container-proxy": "dev-master",
         "react-parallel/worker-pool": "^1.0",
-        "react/http": "^1.0",
-        "roave/better-reflection": "^4.0",
-        "thecodingmachine/safe": "^1.0",
-        "thruway/middleware": "^0.1.0",
-        "wyrihaximus/broadcast": "dev-master",
-        "wyrihaximus/broadcast-contracts": "^1.0",
-        "wyrihaximus/composer-update-bin-autoload-path": "dev-master",
-        "wyrihaximus/doctrine-annotation-autoloader": "^1.0",
-        "wyrihaximus/get-in-packages-composer.jason": "^1.0",
-        "wyrihaximus/iterator-or-array-to-array": "^1.1",
-        "wyrihaximus/json-psr7": "^1.0",
-        "wyrihaximus/list-classes-in-directory": "^1.3",
-        "wyrihaximus/psr-3-callable-throwable-logger": "^2.0",
-        "wyrihaximus/psr-3-context-logger": "^1.0",
-        "wyrihaximus/react-http-middleware-resume-response-body": "^2.0",
-        "wyrihaximus/react-http-middleware-webroot-preload": "^2.0",
-        "wyrihaximus/react-stream-json": "^1.2",
-        "wyrihaximus/recoil-promise-coroutine-wrapper": "^1.0",
-        "wyrihaximus/recoil-queue-caller-pool": "^1.2",
-        "wyrihaximus/simple-twig": "^1.1",
-        "wyrihaximus/string-get-in": "^1.0",
-        "wyrihaximus/to-child-process-or-not-to-child-process": "^1.0",
-        "wyrihaximus/to-coroutine-or-not-to-coroutine": "^1.0",
-        "wyrihaximus/to-thread-or-not-to-thread": "dev-master",
-        "zendframework/zend-diactoros": "^2.1"
+        "ringcentral/psr7": "^1.3",
+        "thecodingmachine/safe": "^1.0"
     },
     "require-dev": {
-        "monolog/monolog": "^2.0",
-        "wyrihaximus/async-test-utilities": "2.2.0",
-        "wyrihaximus/test-utilities": "2.6.0"
+        "wyrihaximus/async-test-utilities": "2.3.0"
     },
     "config": {
         "platform": {
@@ -79,34 +23,14 @@
         },
         "sort-packages": true
     },
-    "extra": {
-        "class": "Mammatus\\Http\\Server\\Composer\\Installer",
-        "mammatus": {
-            "http": {
-                "server": {
-                    "has-vhosts": true
-                }
-            }
-        },
-        "php-di-definitions": {
-            "di": [
-                "etc/di/*.php"
-            ]
-        },
-        "wyrihaximus": {
-            "broadcast": {
-                "has-listeners": true
-            }
-        }
-    },
     "autoload": {
         "psr-4": {
-            "Mammatus\\Http\\Server\\": "src/"
+            "Mammatus\\Http\\Server\\WebSockets\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Mammatus\\Tests\\Http\\Server\\": "tests/"
+            "Mammatus\\Tests\\Http\\Server\\WebSockets\\": "tests/"
         }
     },
     "scripts": {
@@ -115,12 +39,6 @@
         ],
         "post-update-cmd": [
             "composer normalize"
-        ],
-        "pre-autoload-dump": [
-            "Mammatus\\Http\\Server\\Composer\\Installer::findVhosts"
-        ],
-        "generate-config": [
-            "Mammatus\\Http\\Server\\Composer\\Installer::findVhosts"
         ]
     }
 }
