@@ -6,20 +6,21 @@ namespace Mammatus\Http\Server\WebSockets;
 
 use League\Tactician\Middleware;
 use Mammatus\Http\Server\CommandBus\Result as CommandBusResult;
+use Mammatus\Http\Server\WebSockets\Result\Null_;
 use Mammatus\Http\Server\WebSockets\Result\String_;
 use Psr\Http\Message\ResponseInterface;
 
 final class ResponseTransformerMiddleware implements Middleware
 {
     // phpcs:disable
-    public function execute($command, callable $next): ?Result
+    public function execute($command, callable $next): Result
     {
         $result = $next($command);
 
         return $this->extractResult($result);
     }
 
-    private function extractResult(object $result): ?Result
+    private function extractResult(object $result): Result
     {
         if ($result instanceof ResponseInterface) {
             return new String_((string) $result->getBody());
@@ -29,6 +30,6 @@ final class ResponseTransformerMiddleware implements Middleware
             return $result->result();
         }
 
-        return null;
+        return new Null_();
     }
 }
