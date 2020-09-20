@@ -20,7 +20,7 @@ final class ResponseTransformerMiddleware implements Middleware
         return $this->extractResult($result);
     }
 
-    private function extractResult(object $result): Result
+    private function extractResult(?object $result): Result
     {
         if ($result instanceof ResponseInterface) {
             return new String_((string) $result->getBody());
