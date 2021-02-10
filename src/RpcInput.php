@@ -19,13 +19,19 @@ final class RpcInput implements Input
     /**
      * @param ?mixed $default
      *
-     * @return null
+     * @return mixed|null
      *
      * @phpstan-ignore-next-line
      */
     public function getAttribute(string $name, $default = null)
     {
-        return null;
+        if ($this->data instanceof HasAttributes) {
+            if ($this->data->has($name)) {
+                return $this->data->get($name);
+            }
+        }
+
+        return $default;
     }
 
     /** @phpstan-ignore-next-line  */
