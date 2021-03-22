@@ -15,7 +15,7 @@
         "thecodingmachine/safe": "^1.0"
     },
     "require-dev": {
-        "wyrihaximus/async-test-utilities": "3.4.12"
+        "wyrihaximus/async-test-utilities": "3.4.20"
     },
     "config": {
         "platform": {
