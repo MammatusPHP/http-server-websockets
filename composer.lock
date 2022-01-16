@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b29ae54227f52c5452e75699a17c1de1",
+    "content-hash": "59413b3860154185dc8438ce3191eb4b",
     "packages": [
         {
             "name": "ancarda/psr7-string-stream",
@@ -171,37 +171,33 @@
         },
         {
             "name": "chimera/mapping",
-            "version": "0.3.0",
+            "version": "0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/chimeraphp/mapping.git",
-                "reference": "ba8368d675502f3f6dbb47a2cd24215531e9f326"
+                "reference": "148a8170a2a0fd3075d2313a0cfba9fe69ff00da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/chimeraphp/mapping/zipball/ba8368d675502f3f6dbb47a2cd24215531e9f326",
-                "reference": "ba8368d675502f3f6dbb47a2cd24215531e9f326",
+                "url": "https://api.github.com/repos/chimeraphp/mapping/zipball/148a8170a2a0fd3075d2313a0cfba9fe69ff00da",
+                "reference": "148a8170a2a0fd3075d2313a0cfba9fe69ff00da",
                 "shasum": ""
             },
             "require": {
-                "doctrine/annotations": "^1.6",
-                "php": "^7.3 || ^8.0"
+                "doctrine/annotations": "^1.12",
+                "php": "^7.4 || ^8.0"
             },
             "require-dev": {
-                "infection/infection": "^0.13",
-                "lcobucci/coding-standard": "^3.0",
-                "phpstan/phpstan": "^0.11",
-                "phpstan/phpstan-deprecation-rules": "^0.11",
-                "phpstan/phpstan-phpunit": "^0.11",
-                "phpstan/phpstan-strict-rules": "^0.11",
-                "phpunit/phpunit": "^8.2"
+                "infection/infection": "^0.21",
+                "lcobucci/coding-standard": "^6.0",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan": "^0.12",
+                "phpstan/phpstan-deprecation-rules": "^0.12",
+                "phpstan/phpstan-phpunit": "^0.12",
+                "phpstan/phpstan-strict-rules": "^0.12",
+                "phpunit/phpunit": "^9.5"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.3.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Chimera\\Mapping\\": "src"
@@ -220,9 +216,19 @@
             "description": "Useful annotations to configure the application layer of your software",
             "support": {
                 "issues": "https://github.com/chimeraphp/mapping/issues",
-                "source": "https://github.com/chimeraphp/mapping/tree/0.3.0"
+                "source": "https://github.com/chimeraphp/mapping/tree/0.4.0"
             },
-            "time": "2019-06-20T15:33:01+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/lcobucci",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.patreon.com/lcobucci",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2021-02-23T21:23:16+00:00"
         },
         {
             "name": "doctrine/annotations",
