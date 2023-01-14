@@ -11,7 +11,7 @@
         "league/tactician": "^1.0",
         "mammatus/http-server-contracts": "dev-master",
         "ringcentral/psr7": "^1.3",
-        "thecodingmachine/safe": "^1.0"
+        "thecodingmachine/safe": "^2 || ^1"
     },
     "require-dev": {
         "wyrihaximus/async-test-utilities": "3.4.22"
